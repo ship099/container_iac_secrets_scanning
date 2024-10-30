@@ -67,7 +67,7 @@ export async function ContainerScan(parameters:any) {
 
       //run all commands in parallel
       runParallelFunctions().catch((error) => {
-        console.error('An error occurred:', error);
+        console.error('An error occurred:Shipra', error);
       });
 
       //store artifacts
