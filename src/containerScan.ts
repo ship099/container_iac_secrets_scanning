@@ -11,6 +11,19 @@ import { store_artifacts } from "./store_artifacts";
 
 export async function ContainerScan(parameters: any) {
 
+  const pwdCommand1 = `pwd`
+  //const lsCommand = `cat ${scaResult.fileName}`
+  const lsCommand1 = `ls`
+  try {
+    console.log("before executing pwd")
+    execSync(pwdCommand1, { stdio: 'inherit' })
+    execSync(lsCommand1, { stdio: 'inherit' })
+    console.log("after executing pwd")
+  }
+  catch (e) {
+    console.log("Shipra executing command", e)
+  }
+
   //install the cli
   install_cli(parameters)
 
