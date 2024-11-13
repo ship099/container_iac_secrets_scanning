@@ -90,7 +90,7 @@ export async function ContainerScan(parameters: any) {
 
         // await Promise.all(promises);
         const promises = [
-          () => run_cli(scanCommandOriginal, parameters.debug, 'results.json'),
+          // () => run_cli(scanCommandOriginal, parameters.debug, 'results.json'),
           () => run_cli(scanCommandText, parameters.debug, 'results.txt'),
           () => run_cli(sbom_cyclonedx_xml, parameters.debug, sbom_cyclonedx_xml_results_file),
           () => run_cli(sbom_cyclonedx_json, parameters.debug, sbom_cyclonedx_json_results_file),

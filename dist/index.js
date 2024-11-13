@@ -95930,7 +95930,7 @@ function ContainerScan(parameters) {
                         // const promises = [run_cli(scanCommandOriginal, parameters.debug, 'results.json'), run_cli(scanCommandText, parameters.debug, 'results.txt'), run_cli(sbom_cyclonedx_xml, parameters.debug, sbom_cyclonedx_xml_results_file), run_cli(sbom_cyclonedx_json, parameters.debug, sbom_cyclonedx_json_results_file), run_cli(sbom_spdx_tag_value, parameters.debug, sbom_spdx_tag_value_results_file), run_cli(sbom_spdx_json, parameters.debug, sbom_spdx_json_results_file), run_cli(sbom_github, parameters.debug, sbom_github_results_file)];
                         // await Promise.all(promises);
                         const promises = [
-                            () => (0, run_command_1.run_cli)(scanCommandOriginal, parameters.debug, 'results.json'),
+                            // () => run_cli(scanCommandOriginal, parameters.debug, 'results.json'),
                             () => (0, run_command_1.run_cli)(scanCommandText, parameters.debug, 'results.txt'),
                             () => (0, run_command_1.run_cli)(sbom_cyclonedx_xml, parameters.debug, sbom_cyclonedx_xml_results_file),
                             () => (0, run_command_1.run_cli)(sbom_cyclonedx_json, parameters.debug, sbom_cyclonedx_json_results_file),
