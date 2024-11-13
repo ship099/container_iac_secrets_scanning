@@ -7,7 +7,7 @@ export async function run_cli(command: string, debug: any, resultsfile: any) {
 
     //let scanCommand = `curl -fsS https://tools.veracode.com/veracode-cli/install | sh && ./veracode ${command} `
 
-    let scanCommand = `../veracode-cli/veracode ${command} `
+    let scanCommand = `../veracode-cli/veracode-cli_2.28.0_linux_x86/veracode ${command} `
     core.info('Scan command :' + scanCommand)
     let curlCommandOutput = execSync(scanCommand)
 

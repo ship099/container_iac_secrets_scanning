@@ -97058,11 +97058,13 @@ function install_cli(parameters) {
         const response = yield axios_1.default.get(downloadUrl, { responseType: 'arraybuffer', maxContentLength: Number.MAX_SAFE_INTEGER, maxBodyLength: Number.MAX_SAFE_INTEGER });
         const buffer = Buffer.from(response.data);
         const tempZipPath = path_1.default.resolve(cliFile);
-        console.log("tempZipFile", tempZipPath);
+        core.info("tempZipFile " + tempZipPath);
         fs_1.default.writeFileSync(tempZipPath, buffer);
         const command = `tar -xzf ${tempZipPath} -C ${__dirname}`;
         let curlCommandOutput1 = (0, child_process_1.execSync)(command);
         fs_1.default.unlinkSync(tempZipPath);
+        const extractedCliDir = path_1.default.join(`${__dirname}`, `veracode-cli_2.28.0_linux_x86`);
+        const veracodeExecutable = path_1.default.join(extractedCliDir, 'veracode');
         // const pwdCommand = `pwd`
         // //const lsCommand = `cat ${scaResult.fileName}`
         // const lsCommand = `ls`
@@ -97133,7 +97135,7 @@ const child_process_1 = __nccwpck_require__(35317);
 function run_cli(command, debug, resultsfile) {
     return __awaiter(this, void 0, void 0, function* () {
         //let scanCommand = `curl -fsS https://tools.veracode.com/veracode-cli/install | sh && ./veracode ${command} `
-        let scanCommand = `../veracode-cli/veracode ${command} `;
+        let scanCommand = `../veracode-cli/veracode-cli_2.28.0_linux_x86/veracode ${command} `;
         core.info('Scan command :' + scanCommand);
         let curlCommandOutput = (0, child_process_1.execSync)(scanCommand);
         if (debug == "true") {

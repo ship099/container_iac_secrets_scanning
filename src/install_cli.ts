@@ -18,11 +18,14 @@ export async function install_cli(parameters: any) {
   const response = await axios.get(downloadUrl, { responseType: 'arraybuffer', maxContentLength: Number.MAX_SAFE_INTEGER, maxBodyLength: Number.MAX_SAFE_INTEGER });
   const buffer = Buffer.from(response.data);
   const tempZipPath = path.resolve(cliFile);
-  console.log("tempZipFile", tempZipPath)
+  core.info("tempZipFile " + tempZipPath)
   fs.writeFileSync(tempZipPath, buffer);
   const command = `tar -xzf ${tempZipPath} -C ${__dirname}`
   let curlCommandOutput1 = execSync(command);
   fs.unlinkSync(tempZipPath);
+
+  const extractedCliDir = path.join(`${__dirname}`, `veracode-cli_2.28.0_linux_x86`);
+  const veracodeExecutable = path.join(extractedCliDir, 'veracode');
 
 
   // const pwdCommand = `pwd`
