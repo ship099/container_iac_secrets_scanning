@@ -25,6 +25,18 @@ export async function install_cli(parameters: any) {
   // core.info('Install command :' + installCommand)
   //  let curlCommandOutput = execSync(installCommand)
 
+  const pwdCommand = `pwd`
+  //const lsCommand = `cat ${scaResult.fileName}`
+  const lsCommand = `ls`
+  try {
+    console.log("inside installing cli before executing pwd")
+    execSync(pwdCommand, { stdio: 'inherit' })
+    execSync(lsCommand, { stdio: 'inherit' })
+    console.log("after executing pwd")
+  }
+  catch (e) {
+    console.log("Shipra executing command", e)
+  }
   if (parameters.debug == "true") {
     core.info('#### DEBUG START ####')
     core.info('intall_cli.ts - command output')
