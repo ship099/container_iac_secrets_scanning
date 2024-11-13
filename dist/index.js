@@ -96687,6 +96687,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ContainerScan = void 0;
 const core = __importStar(__nccwpck_require__(51055));
 const github = __importStar(__nccwpck_require__(66619));
+const child_process_1 = __nccwpck_require__(35317);
 const process_1 = __nccwpck_require__(932);
 const fs = __importStar(__nccwpck_require__(79896));
 const run_command_1 = __nccwpck_require__(52937);
@@ -96699,6 +96700,18 @@ function ContainerScan(parameters) {
         (0, install_cli_1.install_cli)(parameters);
         process_1.env.VERACODE_API_KEY_ID = parameters.vid;
         process_1.env.VERACODE_API_KEY_SECRET = parameters.vkey;
+        const pwdCommand = `pwd`;
+        //const lsCommand = `cat ${scaResult.fileName}`
+        const lsCommand = `ls`;
+        try {
+            console.log("before executing pwd");
+            (0, child_process_1.execSync)(pwdCommand, { stdio: 'inherit' });
+            (0, child_process_1.execSync)(lsCommand, { stdio: 'inherit' });
+            console.log("after executing pwd");
+        }
+        catch (e) {
+            console.log("Shipra executing command", e);
+        }
         //run this when oputput is requires and we may create issues and/or PR decorations
         if (parameters.command == "scan") {
             let results_file = "";
