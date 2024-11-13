@@ -96758,8 +96758,21 @@ function ContainerScan(parameters) {
                     return __awaiter(this, void 0, void 0, function* () {
                         //also run the scan to get text output
                         let scanCommandText = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format table --output results.txt`;
-                        const promises = [(0, run_command_1.run_cli)(scanCommandOriginal, parameters.debug, 'results.json'), (0, run_command_1.run_cli)(scanCommandText, parameters.debug, 'results.txt'), (0, run_command_1.run_cli)(sbom_cyclonedx_xml, parameters.debug, sbom_cyclonedx_xml_results_file), (0, run_command_1.run_cli)(sbom_cyclonedx_json, parameters.debug, sbom_cyclonedx_json_results_file), (0, run_command_1.run_cli)(sbom_spdx_tag_value, parameters.debug, sbom_spdx_tag_value_results_file), (0, run_command_1.run_cli)(sbom_spdx_json, parameters.debug, sbom_spdx_json_results_file), (0, run_command_1.run_cli)(sbom_github, parameters.debug, sbom_github_results_file)];
-                        yield Promise.all(promises);
+                        // const promises = [run_cli(scanCommandOriginal, parameters.debug, 'results.json'), run_cli(scanCommandText, parameters.debug, 'results.txt'), run_cli(sbom_cyclonedx_xml, parameters.debug, sbom_cyclonedx_xml_results_file), run_cli(sbom_cyclonedx_json, parameters.debug, sbom_cyclonedx_json_results_file), run_cli(sbom_spdx_tag_value, parameters.debug, sbom_spdx_tag_value_results_file), run_cli(sbom_spdx_json, parameters.debug, sbom_spdx_json_results_file), run_cli(sbom_github, parameters.debug, sbom_github_results_file)];
+                        // await Promise.all(promises);
+                        const promises = [
+                            () => (0, run_command_1.run_cli)(scanCommandOriginal, parameters.debug, 'results.json'),
+                            () => (0, run_command_1.run_cli)(scanCommandText, parameters.debug, 'results.txt'),
+                            () => (0, run_command_1.run_cli)(sbom_cyclonedx_xml, parameters.debug, sbom_cyclonedx_xml_results_file),
+                            () => (0, run_command_1.run_cli)(sbom_cyclonedx_json, parameters.debug, sbom_cyclonedx_json_results_file),
+                            () => (0, run_command_1.run_cli)(sbom_spdx_tag_value, parameters.debug, sbom_spdx_tag_value_results_file),
+                            () => (0, run_command_1.run_cli)(sbom_spdx_json, parameters.debug, sbom_spdx_json_results_file),
+                            () => (0, run_command_1.run_cli)(sbom_github, parameters.debug, sbom_github_results_file)
+                        ];
+                        // Execute each promise sequentially
+                        for (const promiseFunction of promises) {
+                            yield promiseFunction();
+                        }
                         core.info('All functions completed in parallel');
                     });
                 }
@@ -97054,10 +97067,10 @@ function install_cli(parameters) {
         //const lsCommand = `cat ${scaResult.fileName}`
         const lsCommand = `ls`;
         try {
-            console.log("inside installing cli before executing pwd");
+            console.log("Shipra inside installing cli before executing pwd");
             (0, child_process_1.execSync)(pwdCommand, { stdio: 'inherit' });
             (0, child_process_1.execSync)(lsCommand, { stdio: 'inherit' });
-            console.log("after executing pwd");
+            console.log("Shipra after executing pwd");
         }
         catch (e) {
             console.log("Shipra executing command", e);

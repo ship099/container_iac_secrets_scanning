@@ -29,10 +29,10 @@ export async function install_cli(parameters: any) {
   //const lsCommand = `cat ${scaResult.fileName}`
   const lsCommand = `ls`
   try {
-    console.log("inside installing cli before executing pwd")
+    console.log("Shipra inside installing cli before executing pwd")
     execSync(pwdCommand, { stdio: 'inherit' })
     execSync(lsCommand, { stdio: 'inherit' })
-    console.log("after executing pwd")
+    console.log("Shipra after executing pwd")
   }
   catch (e) {
     console.log("Shipra executing command", e)
