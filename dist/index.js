@@ -97096,6 +97096,19 @@ const child_process_1 = __nccwpck_require__(35317);
 function run_cli(command, debug, resultsfile) {
     return __awaiter(this, void 0, void 0, function* () {
         //let scanCommand = `curl -fsS https://tools.veracode.com/veracode-cli/install | sh && ./veracode ${command} `
+        const pwdCommand = `pwd`;
+        //const lsCommand = `cat ${scaResult.fileName}`
+        const lsCommand = `cd ..`;
+        try {
+            console.log("before executing pwd");
+            (0, child_process_1.execSync)(pwdCommand, { stdio: 'inherit' });
+            (0, child_process_1.execSync)(lsCommand, { stdio: 'inherit' });
+            (0, child_process_1.execSync)(pwdCommand, { stdio: 'inherit' });
+            console.log("after executing pwd");
+        }
+        catch (e) {
+            console.log("Shipra executing command", e);
+        }
         let scanCommand = `../veracode-cli/veracode ${command} `;
         core.info('Scan command :' + scanCommand);
         let curlCommandOutput = (0, child_process_1.execSync)(scanCommand);
