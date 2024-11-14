@@ -8,6 +8,7 @@ import * as fs from 'fs';
 import { run_cli } from "./run_command";
 import { install_cli } from "./install_cli";
 import { store_artifacts } from "./store_artifacts";
+import path from "path";
 
 export async function ContainerScan(parameters: any) {
 
@@ -43,6 +44,8 @@ export async function ContainerScan(parameters: any) {
     console.log("Shipra executing command", e)
   }
 
+  const extractedCliDir = path.join(`${__dirname}`, `veracode-cli_2.28.0_linux_x86`);
+  const veracodeExecutable = path.join(extractedCliDir, 'veracode');
   //run this when oputput is requires and we may create issues and/or PR decorations
   if (parameters.command == "scan") {
 
@@ -91,12 +94,12 @@ export async function ContainerScan(parameters: any) {
         // await Promise.all(promises);
         const promises = [
           // () => run_cli(scanCommandOriginal, parameters.debug, 'results.json'),
-          () => run_cli(scanCommandText, parameters.debug, 'results.txt'),
-          () => run_cli(sbom_cyclonedx_xml, parameters.debug, sbom_cyclonedx_xml_results_file),
-          () => run_cli(sbom_cyclonedx_json, parameters.debug, sbom_cyclonedx_json_results_file),
-          () => run_cli(sbom_spdx_tag_value, parameters.debug, sbom_spdx_tag_value_results_file),
-          () => run_cli(sbom_spdx_json, parameters.debug, sbom_spdx_json_results_file),
-          () => run_cli(sbom_github, parameters.debug, sbom_github_results_file)
+          () => run_cli(veracodeExecutable, scanCommandText, parameters.debug, 'results.txt'),
+          () => run_cli(veracodeExecutable, sbom_cyclonedx_xml, parameters.debug, sbom_cyclonedx_xml_results_file),
+          () => run_cli(veracodeExecutable, sbom_cyclonedx_json, parameters.debug, sbom_cyclonedx_json_results_file),
+          () => run_cli(veracodeExecutable, sbom_spdx_tag_value, parameters.debug, sbom_spdx_tag_value_results_file),
+          () => run_cli(veracodeExecutable, sbom_spdx_json, parameters.debug, sbom_spdx_json_results_file),
+          () => run_cli(veracodeExecutable, sbom_github, parameters.debug, sbom_github_results_file)
         ];
 
         // Execute each promise sequentially
@@ -117,7 +120,7 @@ export async function ContainerScan(parameters: any) {
     }
     else {
       async function runParallelFunctions(): Promise<void> {
-        const promises = [run_cli(scanCommandOriginal, parameters.debug, 'results.txt'), run_cli(sbom_cyclonedx_xml, parameters.debug, sbom_cyclonedx_xml_results_file), run_cli(sbom_cyclonedx_json, parameters.debug, sbom_cyclonedx_json_results_file), run_cli(sbom_spdx_tag_value, parameters.debug, sbom_spdx_tag_value_results_file), run_cli(sbom_spdx_json, parameters.debug, sbom_spdx_json_results_file), run_cli(sbom_github, parameters.debug, sbom_github_results_file)];
+        const promises = [run_cli(veracodeExecutable, scanCommandOriginal, parameters.debug, 'results.txt'), run_cli(veracodeExecutable, sbom_cyclonedx_xml, parameters.debug, sbom_cyclonedx_xml_results_file), run_cli(veracodeExecutable, sbom_cyclonedx_json, parameters.debug, sbom_cyclonedx_json_results_file), run_cli(veracodeExecutable, sbom_spdx_tag_value, parameters.debug, sbom_spdx_tag_value_results_file), run_cli(veracodeExecutable, sbom_spdx_json, parameters.debug, sbom_spdx_json_results_file), run_cli(veracodeExecutable, sbom_github, parameters.debug, sbom_github_results_file)];
         await Promise.all(promises);
         core.info('All functions completed in parallel');
       }
@@ -260,7 +263,7 @@ export async function ContainerScan(parameters: any) {
 
     //generate command to run
     let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format ${parameters.format} --output ${filename}`
-    run_cli(scanCommandOriginal, parameters.debug, filename)
+    run_cli(veracodeExecutable, scanCommandOriginal, parameters.debug, filename)
     let storeArtifacts = await store_artifacts(resultFile, parameters.debug)
 
   }

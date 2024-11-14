@@ -31,13 +31,14 @@ export async function install_cli(parameters: any) {
   const buffer = Buffer.from(response.data);
   const tempZipPath = path.resolve(cliFile);
   core.info('tempZipFile ' + tempZipPath)
+  execSync(pwdCommand, { stdio: 'inherit' })
   fs.writeFileSync(tempZipPath, buffer);
   const command = `tar -xzf ${tempZipPath} -C ${__dirname}`
   let curlCommandOutput1 = execSync(command);
   fs.unlinkSync(tempZipPath);
 
-  const extractedCliDir = path.join(`${__dirname}`, `veracode-cli_2.28.0_linux_x86`);
-  const veracodeExecutable = path.join(extractedCliDir, 'veracode');
+  // const extractedCliDir = path.join(`${__dirname}`, `veracode-cli_2.28.0_linux_x86`);
+  // const veracodeExecutable = path.join(extractedCliDir, 'veracode');
 
 
   const pwdCommand1 = `pwd`
