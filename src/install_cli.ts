@@ -8,10 +8,10 @@ import path from "path";
 
 export async function install_cli(parameters: any) {
 
-  let installCommand = `cd ..;mkdir veracode-cli; cd veracode-cli;`
+  // let installCommand = `cd ..;mkdir veracode-cli; cd veracode-cli;`
 
-  core.info('Install command :' + installCommand)
-  let curlCommandOutput = execSync(installCommand)
+  // core.info('Install command :' + installCommand)
+  // let curlCommandOutput = execSync(installCommand)
   const pwdCommand = `pwd`
   //const lsCommand = `cat ${scaResult.fileName}`
   const lsCommand = `ls`
@@ -59,6 +59,6 @@ export async function install_cli(parameters: any) {
     core.info('command output : ' + curlCommandOutput1)
     core.info('#### DEBUG END ####')
   }
-  core.info(`${curlCommandOutput}`)
+  core.info(`${curlCommandOutput1}`)
 
 }
