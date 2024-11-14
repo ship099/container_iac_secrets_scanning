@@ -29,7 +29,7 @@ export async function install_cli(parameters: any) {
   const downloadUrl = `https://tools.veracode.com/veracode-cli/${cliFile}`;
   const response = await axios.get(downloadUrl, { responseType: 'arraybuffer', maxContentLength: Number.MAX_SAFE_INTEGER, maxBodyLength: Number.MAX_SAFE_INTEGER });
   const buffer = Buffer.from(response.data);
-  const tempZipPath = path.resolve(cliFile);
+  const tempZipPath = path.resolve(__dirname, cliFile);
   core.info('tempZipFile ' + tempZipPath)
   execSync(pwdCommand, { stdio: 'inherit' })
   fs.writeFileSync(tempZipPath, buffer);
