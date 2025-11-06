@@ -100084,29 +100084,34 @@ const core = __importStar(__nccwpck_require__(1055));
 const child_process_1 = __nccwpck_require__(5317);
 function install_cli(parameters) {
     return __awaiter(this, void 0, void 0, function* () {
-        //let installCommand = `cd ..;mkdir veracode-cli; cd veracode-cli; curl -fsS https://tools.veracode.com/veracode-cli/install | sh`
-        // let installCommand = 'powershell -Command "Set-Location ..; New-Item -ItemType Directory -Force -Name veracode-cli; Set-Location veracode-cli; Invoke-WebRequest -Uri https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1;"'
-        let installCommand = `powershell -NoProfile -ExecutionPolicy Bypass -Command "
+        try {
+            //let installCommand = `cd ..;mkdir veracode-cli; cd veracode-cli; curl -fsS https://tools.veracode.com/veracode-cli/install | sh`
+            // let installCommand = 'powershell -Command "Set-Location ..; New-Item -ItemType Directory -Force -Name veracode-cli; Set-Location veracode-cli; Invoke-WebRequest -Uri https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1;"'
+            let installCommand = `powershell -NoProfile -ExecutionPolicy Bypass -Command "
     Set-Location ..;
     New-Item -ItemType Directory -Force -Name veracode-cli | Out-Null;
     Set-Location veracode-cli;
     Invoke-WebRequest -Uri https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1
   "`;
-        /**
-         *   Set-ExecutionPolicy AllSigned -Scope Process -Force
-          $ProgressPreference = "silentlyContinue"
-          iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))
-          $VERACODE_CLI = Get-Command veracode | Select-Object -ExpandProperty Definition
-         */
-        core.info('Install command :' + installCommand);
-        let curlCommandOutput = (0, child_process_1.execSync)(installCommand);
-        if (parameters.debug == "true") {
-            core.info('#### DEBUG START ####');
-            core.info('intall_cli.ts - command output');
-            core.info('command output : ' + curlCommandOutput);
-            core.info('#### DEBUG END ####');
+            /**
+             *   Set-ExecutionPolicy AllSigned -Scope Process -Force
+              $ProgressPreference = "silentlyContinue"
+              iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))
+              $VERACODE_CLI = Get-Command veracode | Select-Object -ExpandProperty Definition
+             */
+            core.info('Install command :' + installCommand);
+            let curlCommandOutput = (0, child_process_1.execSync)(installCommand);
+            if (parameters.debug == "true") {
+                core.info('#### DEBUG START ####');
+                core.info('intall_cli.ts - command output');
+                core.info('command output : ' + curlCommandOutput);
+                core.info('#### DEBUG END ####');
+            }
+            // core.info(`${curlCommandOutput}`)
         }
-        // core.info(`${curlCommandOutput}`)
+        catch (e) {
+            console.log(e);
+        }
     });
 }
 exports.install_cli = install_cli;
