@@ -4,22 +4,33 @@ import { execSync,exec } from "child_process";
 
 
 export async function run_cli(command:string, debug:any, resultsfile:any, failBuildOnError:boolean) {
-    let scanCommand = `../veracode-cli/veracode ${command}`
-    core.info('Scan command :' + scanCommand)
+    // let scanCommand = `../veracode-cli/veracode ${command}`
+    // core.info('Scan command :' + scanCommand)
+
     //let scanCommand = `curl -fsS https://tools.veracode.com/veracode-cli/install | sh && ./veracode ${command} `
+
+    execSync(
+        `powershell -NoProfile -ExecutionPolicy Bypass -Command "
+        Set-Location ../veracode-cli;
+        & ./install.ps1 ${command}
+        "`,
+        { stdio: 'inherit' }
+      );
+
     try{
        
-        let curlCommandOutput = execSync(scanCommand)
+       // let curlCommandOutput = execSync(scanCommand)
 
         if ( debug == "true" ){
             core.info('#### DEBUG START ####')
             core.info('run_command.ts - command output')
-            core.info('command output : '+curlCommandOutput)
+     //       core.info('command output : '+curlCommandOutput)
             core.info('#### DEBUG END ####')
         }
-        core.info(`${curlCommandOutput}`)
+   //     core.info(`${curlCommandOutput}`)
     } catch (error: any) {
-        const failureMessage = `Veracode CLI scan failed. Exit code: ${error.status}, Command: ${scanCommand}`;
+      //  const failureMessage = `Veracode CLI scan failed. Exit code: ${error.status}, Command: ${scanCommand}`;
+        const failureMessage = `Veracode CLI scan failed. Exit code: ${error.status},`;
         const failBuildOnErrorBool = String(failBuildOnError).toLowerCase() === "true";
         if (failBuildOnErrorBool) {
             core.setFailed(failureMessage);

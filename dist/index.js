@@ -100085,7 +100085,13 @@ const child_process_1 = __nccwpck_require__(5317);
 function install_cli(parameters) {
     return __awaiter(this, void 0, void 0, function* () {
         //let installCommand = `cd ..;mkdir veracode-cli; cd veracode-cli; curl -fsS https://tools.veracode.com/veracode-cli/install | sh`
-        let installCommand = 'powershell -Command "Set-Location ..; New-Item -ItemType Directory -Force -Name veracode-cli; Set-Location veracode-cli; Invoke-WebRequest -Uri https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1; & ./install.ps1"';
+        // let installCommand = 'powershell -Command "Set-Location ..; New-Item -ItemType Directory -Force -Name veracode-cli; Set-Location veracode-cli; Invoke-WebRequest -Uri https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1;"'
+        let installCommand = `powershell -NoProfile -ExecutionPolicy Bypass -Command "
+    Set-Location ..;
+    New-Item -ItemType Directory -Force -Name veracode-cli | Out-Null;
+    Set-Location veracode-cli;
+    Invoke-WebRequest -Uri https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1
+  "`;
         /**
          *   Set-ExecutionPolicy AllSigned -Scope Process -Force
           $ProgressPreference = "silentlyContinue"
@@ -100151,21 +100157,26 @@ const core = __importStar(__nccwpck_require__(1055));
 const child_process_1 = __nccwpck_require__(5317);
 function run_cli(command, debug, resultsfile, failBuildOnError) {
     return __awaiter(this, void 0, void 0, function* () {
-        let scanCommand = `../veracode-cli/veracode ${command}`;
-        core.info('Scan command :' + scanCommand);
+        // let scanCommand = `../veracode-cli/veracode ${command}`
+        // core.info('Scan command :' + scanCommand)
         //let scanCommand = `curl -fsS https://tools.veracode.com/veracode-cli/install | sh && ./veracode ${command} `
+        (0, child_process_1.execSync)(`powershell -NoProfile -ExecutionPolicy Bypass -Command "
+        Set-Location ../veracode-cli;
+        & ./install.ps1 ${command}
+        "`, { stdio: 'inherit' });
         try {
-            let curlCommandOutput = (0, child_process_1.execSync)(scanCommand);
+            // let curlCommandOutput = execSync(scanCommand)
             if (debug == "true") {
                 core.info('#### DEBUG START ####');
                 core.info('run_command.ts - command output');
-                core.info('command output : ' + curlCommandOutput);
+                //       core.info('command output : '+curlCommandOutput)
                 core.info('#### DEBUG END ####');
             }
-            core.info(`${curlCommandOutput}`);
+            //     core.info(`${curlCommandOutput}`)
         }
         catch (error) {
-            const failureMessage = `Veracode CLI scan failed. Exit code: ${error.status}, Command: ${scanCommand}`;
+            //  const failureMessage = `Veracode CLI scan failed. Exit code: ${error.status}, Command: ${scanCommand}`;
+            const failureMessage = `Veracode CLI scan failed. Exit code: ${error.status},`;
             const failBuildOnErrorBool = String(failBuildOnError).toLowerCase() === "true";
             if (failBuildOnErrorBool) {
                 core.setFailed(failureMessage);
