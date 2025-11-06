@@ -100160,11 +100160,11 @@ function run_cli(command, debug, resultsfile, failBuildOnError) {
         // let scanCommand = `../veracode-cli/veracode ${command}`
         // core.info('Scan command :' + scanCommand)
         //let scanCommand = `curl -fsS https://tools.veracode.com/veracode-cli/install | sh && ./veracode ${command} `
-        (0, child_process_1.execSync)(`powershell -NoProfile -ExecutionPolicy Bypass -Command "
+        try {
+            (0, child_process_1.execSync)(`powershell -NoProfile -ExecutionPolicy Bypass -Command "
         Set-Location ../veracode-cli;
         & ./install.ps1 ${command}
         "`, { stdio: 'inherit' });
-        try {
             // let curlCommandOutput = execSync(scanCommand)
             if (debug == "true") {
                 core.info('#### DEBUG START ####');
@@ -100176,6 +100176,7 @@ function run_cli(command, debug, resultsfile, failBuildOnError) {
         }
         catch (error) {
             //  const failureMessage = `Veracode CLI scan failed. Exit code: ${error.status}, Command: ${scanCommand}`;
+            console.log(error);
             const failureMessage = `Veracode CLI scan failed. Exit code: ${error.status},`;
             const failBuildOnErrorBool = String(failBuildOnError).toLowerCase() === "true";
             if (failBuildOnErrorBool) {
