@@ -9,7 +9,7 @@ export async function run_cli(command:string, debug:any, resultsfile:any, failBu
 
     //let scanCommand = `curl -fsS https://tools.veracode.com/veracode-cli/install | sh && ./veracode ${command} `
 try{
-    execSync(
+   await execSync(
         `powershell -NoProfile -ExecutionPolicy Bypass -Command "
         Set-Location ../veracode-cli;
         & ./install.ps1 ${command}
