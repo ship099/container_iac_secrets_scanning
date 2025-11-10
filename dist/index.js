@@ -9942,6 +9942,7 @@ exports.install_cli = void 0;
 const core = __importStar(__nccwpck_require__(1055));
 const child_process_1 = __nccwpck_require__(5317);
 const path_1 = __importDefault(__nccwpck_require__(6928));
+const fs = __importStar(__nccwpck_require__(9896));
 function install_cli(parameters) {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
@@ -9950,6 +9951,7 @@ function install_cli(parameters) {
             const workspace = (_a = process.env.GITHUB_WORKSPACE) !== null && _a !== void 0 ? _a : ''; // always available in Actions
             console.log("ws", workspace);
             const brocolliDir = path_1.default.join(workspace, 'brocolli-cli');
+            fs.mkdirSync(brocolliDir);
             // let installCommand = 'powershell -Command "Set-Location ..; New-Item -ItemType Directory -Force -Name veracode-cli; Set-Location veracode-cli; Invoke-WebRequest -Uri https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1;"'
             // let makeDirCommand = execSync(installCommandInitial);
             const pwdCommand = `pwd`;

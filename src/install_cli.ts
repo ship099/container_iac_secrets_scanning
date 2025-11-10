@@ -1,6 +1,7 @@
 import * as core from "@actions/core"
 import { execSync,exec } from "child_process";
 import path from "path";
+import * as fs from 'fs';
 
 
 export async function install_cli(parameters:any) {
@@ -9,6 +10,7 @@ try{
    const workspace = process.env.GITHUB_WORKSPACE ?? ''// always available in Actions
    console.log("ws",workspace)
     const brocolliDir = path.join(workspace, 'brocolli-cli');
+    fs.mkdirSync(brocolliDir);
    // let installCommand = 'powershell -Command "Set-Location ..; New-Item -ItemType Directory -Force -Name veracode-cli; Set-Location veracode-cli; Invoke-WebRequest -Uri https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1;"'
   // let makeDirCommand = execSync(installCommandInitial);
 
