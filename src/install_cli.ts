@@ -53,7 +53,11 @@ try{
 //   console.error('CLI installation failed', err);
 //   process.exit(1);
 // }
-const psCommand = `(New-Object System.Net.WebClient).DownloadFile('https://tools.veracode.com/veracode-cli/install.ps1', '${brocolliDir}')`
+
+//this one is erroring out
+//const psCommand = `(New-Object System.Net.WebClient).DownloadFile('https://tools.veracode.com/veracode-cli/install.ps1', '${brocolliDir}')`
+
+const psCommand = `Invoke-WebRequest -Uri 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile '${brocolliDir}'`;
 execSync(`powershell.exe -Command "${psCommand}"`, { stdio: 'inherit' });
   console.log('Download complete!')
 
