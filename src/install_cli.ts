@@ -29,8 +29,7 @@ try{
 
 
    let installCommand =  `powershell -NoProfile -ExecutionPolicy Bypass -Command "
-    Invoke-WebRequest -Uri https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1
-  "`
+    Invoke-WebRequest https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1"`
     /**
      *   Set-ExecutionPolicy AllSigned -Scope Process -Force
       $ProgressPreference = "silentlyContinue"
