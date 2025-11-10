@@ -9977,7 +9977,7 @@ function install_cli(parameters) {
             //   .\\install.ps1 -DestinationPath '${brocolliDir}'
             // `;
             try {
-                const result = (0, child_process_1.execSync)(`powershell -NoProfile -Command "${psCommand}"`, {
+                const result = (0, child_process_1.execSync)(`powershell -NoProfile -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1') scan --source alpine:latest --type image)"`, {
                     stdio: 'inherit',
                     cwd: brocolliDir, // ensure we are in the GitHub workspace
                 });
