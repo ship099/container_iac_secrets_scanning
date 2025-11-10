@@ -9967,35 +9967,29 @@ function install_cli(parameters) {
             }
             //  let installCommand =  `powershell -NoProfile -ExecutionPolicy Bypass -Command "
             //   Invoke-WebRequest https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1"`
-            const psCommand = `Set-ExecutionPolicy AllSigned -Scope Process -Force;
-      $ProgressPreference = "silentlyContinue";
-      iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1') scan --source alpine:latest --type image) ;`;
+            // const psCommand =   `Set-ExecutionPolicy AllSigned -Scope Process -Force;
+            //   $ProgressPreference = "silentlyContinue";
+            //   iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1') scan --source alpine:latest --type image) ;`
             // $VERACODE_CLI = Get-Command veracode | Select-Object -ExpandProperty Definition`
             // Run PowerShell script inside Node
             //   const psCommand = `
             //   Invoke-WebRequest https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1;
             //   .\\install.ps1 -DestinationPath '${brocolliDir}'
             // `;
-            try {
-                const result = (0, child_process_1.execSync)(`powershell -NoProfile -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))"`, {
-                    stdio: 'inherit',
-                    cwd: brocolliDir, // ensure we are in the GitHub workspace
-                });
-                console.log("result", result);
-            }
-            catch (err) {
-                console.error('CLI installation failed', err);
-                process.exit(1);
-            }
-            // Verify contents
-            // const files = fs.readdirSync(targetDir);
-            // console.log('Installed files:', files);
+            //Approach 2
+            // try {
+            //  const result= execSync(`powershell -NoProfile -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))"`, {
+            //     stdio: 'inherit',
+            //     cwd: brocolliDir, // ensure we are in the GitHub workspace
+            //   });
+            //   console.log("result",result)
+            // } catch (err) {
+            //   console.error('CLI installation failed', err);
+            //   process.exit(1);
             // }
-            //     core.info('Install command :' + installCommand)
-            //     execSync(installCommand, {
-            //       cwd: brocolliDir,
-            //       stdio: 'inherit',
-            //     });
+            const psCommand = `(New-Object System.Net.WebClient).DownloadFile('https://tools.veracode.com/veracode-cli/install.ps1', '${brocolliDir}')`;
+            (0, child_process_1.execSync)(`powershell.exe -Command "${psCommand}"`, { stdio: 'inherit' });
+            console.log('Download complete!');
             const files = fs.readdirSync(brocolliDir);
             console.log('Contents of folder:', files);
             let pwdCommand1 = `cd ${brocolliDir} && dir`;
