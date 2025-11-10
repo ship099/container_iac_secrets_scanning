@@ -1,11 +1,13 @@
 import * as core from "@actions/core"
 import { execSync,exec } from "child_process";
+import path from "path";
 
 
 export async function install_cli(parameters:any) {
 try{
     //let installCommand = `cd ..;mkdir veracode-cli; cd veracode-cli; curl -fsS https://tools.veracode.com/veracode-cli/install | sh`
-    let installCommandInitial = `pwd cd ..;`
+   const workspace = process.env.GITHUB_WORKSPACE ?? ''// always available in Actions
+    const brocolliDir = path.join(workspace, 'brocolli-cli');
    // let installCommand = 'powershell -Command "Set-Location ..; New-Item -ItemType Directory -Force -Name veracode-cli; Set-Location veracode-cli; Invoke-WebRequest -Uri https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1;"'
   // let makeDirCommand = execSync(installCommandInitial);
 
@@ -22,7 +24,7 @@ try{
     console.log("Shipra executing command", e)
   }
 
-  let makeDirCommand = execSync(installCommandInitial);
+ // let makeDirCommand = execSync(installCommandInitial);
 
   try {
     console.log("before executing pwd")

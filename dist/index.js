@@ -9934,15 +9934,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.install_cli = void 0;
 const core = __importStar(__nccwpck_require__(1055));
 const child_process_1 = __nccwpck_require__(5317);
+const path_1 = __importDefault(__nccwpck_require__(6928));
 function install_cli(parameters) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             //let installCommand = `cd ..;mkdir veracode-cli; cd veracode-cli; curl -fsS https://tools.veracode.com/veracode-cli/install | sh`
-            let installCommandInitial = `pwd cd ..;`;
+            const workspace = (_a = process.env.GITHUB_WORKSPACE) !== null && _a !== void 0 ? _a : ''; // always available in Actions
+            const brocolliDir = path_1.default.join(workspace, 'brocolli-cli');
             // let installCommand = 'powershell -Command "Set-Location ..; New-Item -ItemType Directory -Force -Name veracode-cli; Set-Location veracode-cli; Invoke-WebRequest -Uri https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1;"'
             // let makeDirCommand = execSync(installCommandInitial);
             const pwdCommand = `pwd`;
@@ -9957,7 +9963,7 @@ function install_cli(parameters) {
             catch (e) {
                 console.log("Shipra executing command", e);
             }
-            let makeDirCommand = (0, child_process_1.execSync)(installCommandInitial);
+            // let makeDirCommand = execSync(installCommandInitial);
             try {
                 console.log("before executing pwd");
                 (0, child_process_1.execSync)(pwdCommand, { stdio: 'inherit' });
