@@ -9989,7 +9989,7 @@ function install_cli(parameters) {
             // }
             //this one is erroring out
             //const psCommand = `(New-Object System.Net.WebClient).DownloadFile('https://tools.veracode.com/veracode-cli/install.ps1', '${brocolliDir}')`
-            const psCommand = `$destFile = Join-Path '${brocolliDir}' 'install.ps1' && Invoke-WebRequest -Uri 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile $destFile;& $destFile -DestinationPath '${brocolliDir}'`;
+            const psCommand = `$destFile = Join-Path '${brocolliDir}' 'install.ps1'; Invoke-WebRequest -Uri 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile $destFile;& $destFile -DestinationPath '${brocolliDir}'`;
             (0, child_process_1.execSync)(`powershell.exe -Command "${psCommand}"`, { stdio: 'inherit' });
             console.log('Download complete!');
             const files = fs.readdirSync(brocolliDir);
