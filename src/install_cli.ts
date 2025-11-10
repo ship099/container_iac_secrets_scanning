@@ -27,7 +27,6 @@ try{
     console.log("Shipra executing command", e)
   }
 
- // let makeDirCommand = execSync(installCommandInitial);
 
   try {
     console.log("before executing pwd")
@@ -49,6 +48,11 @@ try{
      */
 
     core.info('Install command :' + installCommand)
+    execSync(installCommand, {
+      cwd: brocolliDir,
+      stdio: 'inherit',
+    });
+    
    // let curlCommandOutputInitial = execSync(installCommandInitial)
    // let curlCommandOutput = execSync(installCommand)
 

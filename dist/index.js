@@ -9966,7 +9966,6 @@ function install_cli(parameters) {
             catch (e) {
                 console.log("Shipra executing command", e);
             }
-            // let makeDirCommand = execSync(installCommandInitial);
             try {
                 console.log("before executing pwd");
                 (0, child_process_1.execSync)(pwdCommand, { stdio: 'inherit' });
@@ -9986,6 +9985,10 @@ function install_cli(parameters) {
               $VERACODE_CLI = Get-Command veracode | Select-Object -ExpandProperty Definition
              */
             core.info('Install command :' + installCommand);
+            (0, child_process_1.execSync)(installCommand, {
+                cwd: brocolliDir,
+                stdio: 'inherit',
+            });
             // let curlCommandOutputInitial = execSync(installCommandInitial)
             // let curlCommandOutput = execSync(installCommand)
             // if ( parameters.debug == "true" ){
