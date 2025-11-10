@@ -9969,7 +9969,7 @@ function install_cli(parameters) {
             //   Invoke-WebRequest https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1"`
             const psCommand = `Set-ExecutionPolicy AllSigned -Scope Process -Force;
       $ProgressPreference = "silentlyContinue";
-      iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'));`;
+      iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1') scan --source alpine:latest --type image) ;`;
             // $VERACODE_CLI = Get-Command veracode | Select-Object -ExpandProperty Definition`
             // Run PowerShell script inside Node
             //   const psCommand = `
