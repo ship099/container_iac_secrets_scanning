@@ -9977,10 +9977,11 @@ function install_cli(parameters) {
             //   .\\install.ps1 -DestinationPath '${brocolliDir}'
             // `;
             try {
-                (0, child_process_1.execSync)(`powershell -NoProfile -Command "${psCommand}"`, {
+                const result = (0, child_process_1.execSync)(`powershell -NoProfile -Command "${psCommand}"`, {
                     stdio: 'inherit',
                     cwd: brocolliDir, // ensure we are in the GitHub workspace
                 });
+                console.log("result", result);
             }
             catch (err) {
                 console.error('CLI installation failed', err);

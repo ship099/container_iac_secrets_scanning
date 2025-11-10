@@ -44,10 +44,11 @@ try{
 
 
 try {
-  execSync(`powershell -NoProfile -Command "${psCommand}"`, {
+ const result= execSync(`powershell -NoProfile -Command "${psCommand}"`, {
     stdio: 'inherit',
     cwd: brocolliDir, // ensure we are in the GitHub workspace
   });
+  console.log("result",result)
 } catch (err) {
   console.error('CLI installation failed', err);
   process.exit(1);
