@@ -9998,7 +9998,7 @@ function install_cli(parameters) {
             //     });
             const files = fs.readdirSync(brocolliDir);
             console.log('Contents of folder:', files);
-            let pwdCommand1 = `cd ${brocolliDir}; pwd`;
+            let pwdCommand1 = `cd ${brocolliDir}`;
             try {
                 console.log("before executing pwd");
                 (0, child_process_1.execSync)(pwdCommand1, { stdio: 'inherit' });
