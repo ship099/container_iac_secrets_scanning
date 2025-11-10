@@ -30,22 +30,23 @@ try{
 
   //  let installCommand =  `powershell -NoProfile -ExecutionPolicy Bypass -Command "
   //   Invoke-WebRequest https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1"`
-    /**
-     *   Set-ExecutionPolicy AllSigned -Scope Process -Force
-      $ProgressPreference = "silentlyContinue"
-      iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))
-      $VERACODE_CLI = Get-Command veracode | Select-Object -ExpandProperty Definition
-     */
+    
+    const psCommand =   `Set-ExecutionPolicy AllSigned -Scope Process -Force;
+      $ProgressPreference = "silentlyContinue";
+      iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'));`
+     // $VERACODE_CLI = Get-Command veracode | Select-Object -ExpandProperty Definition`
+     
       // Run PowerShell script inside Node
-  const psCommand = `
-  Invoke-WebRequest https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1;
-  .\\install.ps1 -DestinationPath '${brocolliDir}'
-`;
+//   const psCommand = `
+//   Invoke-WebRequest https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1;
+//   .\\install.ps1 -DestinationPath '${brocolliDir}'
+// `;
+
 
 try {
-  execSync(`powershell -NoProfile -ExecutionPolicy Bypass -Command "${psCommand}"`, {
+  execSync(`powershell -NoProfile -Command "${psCommand}"`, {
     stdio: 'inherit',
-    cwd: workspace, // ensure we are in the GitHub workspace
+    cwd: brocolliDir, // ensure we are in the GitHub workspace
   });
 } catch (err) {
   console.error('CLI installation failed', err);
