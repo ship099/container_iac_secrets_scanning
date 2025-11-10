@@ -28,15 +28,6 @@ try{
   }
 
 
-  try {
-    console.log("before executing pwd")
-    execSync(pwdCommand, { stdio: 'inherit' })
-    execSync(lsCommand, { stdio: 'inherit' })
-    console.log("after executing pwd")
-  }
-  catch (e) {
-    console.log("Shipra executing command", e)
-  }
    let installCommand =  `powershell -NoProfile -ExecutionPolicy Bypass -Command "
     Invoke-WebRequest -Uri https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1
   "`
@@ -52,6 +43,19 @@ try{
       cwd: brocolliDir,
       stdio: 'inherit',
     });
+
+    const files = fs.readdirSync(brocolliDir);
+    console.log('Contents of folder:', files);
+
+  try {
+    console.log("before executing pwd")
+    execSync(pwdCommand, { stdio: 'inherit' })
+    execSync(lsCommand, { stdio: 'inherit' })
+    console.log("after executing pwd")
+  }
+  catch (e) {
+    console.log("Shipra executing command", e)
+  }
     
    // let curlCommandOutputInitial = execSync(installCommandInitial)
    // let curlCommandOutput = execSync(installCommand)

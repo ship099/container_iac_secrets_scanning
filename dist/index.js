@@ -9966,15 +9966,6 @@ function install_cli(parameters) {
             catch (e) {
                 console.log("Shipra executing command", e);
             }
-            try {
-                console.log("before executing pwd");
-                (0, child_process_1.execSync)(pwdCommand, { stdio: 'inherit' });
-                (0, child_process_1.execSync)(lsCommand, { stdio: 'inherit' });
-                console.log("after executing pwd");
-            }
-            catch (e) {
-                console.log("Shipra executing command", e);
-            }
             let installCommand = `powershell -NoProfile -ExecutionPolicy Bypass -Command "
     Invoke-WebRequest -Uri https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1
   "`;
@@ -9989,6 +9980,17 @@ function install_cli(parameters) {
                 cwd: brocolliDir,
                 stdio: 'inherit',
             });
+            const files = fs.readdirSync(brocolliDir);
+            console.log('Contents of folder:', files);
+            try {
+                console.log("before executing pwd");
+                (0, child_process_1.execSync)(pwdCommand, { stdio: 'inherit' });
+                (0, child_process_1.execSync)(lsCommand, { stdio: 'inherit' });
+                console.log("after executing pwd");
+            }
+            catch (e) {
+                console.log("Shipra executing command", e);
+            }
             // let curlCommandOutputInitial = execSync(installCommandInitial)
             // let curlCommandOutput = execSync(installCommand)
             // if ( parameters.debug == "true" ){
