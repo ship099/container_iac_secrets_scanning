@@ -9942,7 +9942,7 @@ function install_cli(parameters) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             //let installCommand = `cd ..;mkdir veracode-cli; cd veracode-cli; curl -fsS https://tools.veracode.com/veracode-cli/install | sh`
-            let installCommandInitial = `cd ..;`;
+            let installCommandInitial = `pwd cd ..;`;
             // let installCommand = 'powershell -Command "Set-Location ..; New-Item -ItemType Directory -Force -Name veracode-cli; Set-Location veracode-cli; Invoke-WebRequest -Uri https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1;"'
             // let makeDirCommand = execSync(installCommandInitial);
             const pwdCommand = `pwd`;
