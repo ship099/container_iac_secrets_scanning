@@ -9948,6 +9948,7 @@ function install_cli(parameters) {
         try {
             //let installCommand = `cd ..;mkdir veracode-cli; cd veracode-cli; curl -fsS https://tools.veracode.com/veracode-cli/install | sh`
             const workspace = (_a = process.env.GITHUB_WORKSPACE) !== null && _a !== void 0 ? _a : ''; // always available in Actions
+            console.log("ws", workspace);
             const brocolliDir = path_1.default.join(workspace, 'brocolli-cli');
             // let installCommand = 'powershell -Command "Set-Location ..; New-Item -ItemType Directory -Force -Name veracode-cli; Set-Location veracode-cli; Invoke-WebRequest -Uri https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1;"'
             // let makeDirCommand = execSync(installCommandInitial);
