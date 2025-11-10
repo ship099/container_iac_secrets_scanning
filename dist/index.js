@@ -9942,11 +9942,22 @@ function install_cli(parameters) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             //let installCommand = `cd ..;mkdir veracode-cli; cd veracode-cli; curl -fsS https://tools.veracode.com/veracode-cli/install | sh`
+            let installCommandInitial = `cd ..;mkdir veracode-cli; cd veracode-cli;`;
             // let installCommand = 'powershell -Command "Set-Location ..; New-Item -ItemType Directory -Force -Name veracode-cli; Set-Location veracode-cli; Invoke-WebRequest -Uri https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1;"'
+            let makeDirCommand = (0, child_process_1.execSync)(installCommandInitial);
+            const pwdCommand = `pwd`;
+            //const lsCommand = `cat ${scaResult.fileName}`
+            const lsCommand = `dir`;
+            try {
+                console.log("before executing pwd");
+                (0, child_process_1.execSync)(pwdCommand, { stdio: 'inherit' });
+                (0, child_process_1.execSync)(lsCommand, { stdio: 'inherit' });
+                console.log("after executing pwd");
+            }
+            catch (e) {
+                console.log("Shipra executing command", e);
+            }
             let installCommand = `powershell -NoProfile -ExecutionPolicy Bypass -Command "
-    Set-Location ..;
-    New-Item -ItemType Directory -Force -Name veracode-cli | Out-Null;
-    Set-Location veracode-cli;
     Invoke-WebRequest -Uri https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1
   "`;
             /**
@@ -9956,13 +9967,14 @@ function install_cli(parameters) {
               $VERACODE_CLI = Get-Command veracode | Select-Object -ExpandProperty Definition
              */
             core.info('Install command :' + installCommand);
-            let curlCommandOutput = (0, child_process_1.execSync)(installCommand);
-            if (parameters.debug == "true") {
-                core.info('#### DEBUG START ####');
-                core.info('intall_cli.ts - command output');
-                core.info('command output : ' + curlCommandOutput);
-                core.info('#### DEBUG END ####');
-            }
+            // let curlCommandOutputInitial = execSync(installCommandInitial)
+            // let curlCommandOutput = execSync(installCommand)
+            // if ( parameters.debug == "true" ){
+            //     core.info('#### DEBUG START ####')
+            //     core.info('intall_cli.ts - command output')
+            //    core.info('command output : '+curlCommandOutput)
+            //     core.info('#### DEBUG END ####')
+            //   }
             // core.info(`${curlCommandOutput}`)
         }
         catch (e) {
