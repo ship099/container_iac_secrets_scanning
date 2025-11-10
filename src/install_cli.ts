@@ -67,11 +67,11 @@ try {
 
     const files = fs.readdirSync(brocolliDir);
     console.log('Contents of folder:', files);
-
+let pwdCommand1 = `cd ${brocolliDir}; pwd`
   try {
     console.log("before executing pwd")
-    execSync(pwdCommand, { stdio: 'inherit' })
-    execSync(lsCommand, { stdio: 'inherit' })
+    execSync(pwdCommand1, { stdio: 'inherit' })
+   // execSync(lsCommand1, { stdio: 'inherit' })
     console.log("after executing pwd")
   }
   catch (e) {
