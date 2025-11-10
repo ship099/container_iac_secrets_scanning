@@ -44,7 +44,7 @@ try{
 
 
 try {
- const result= execSync(`powershell -NoProfile -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1') scan --source alpine:latest --type image)"`, {
+ const result= execSync(`powershell -NoProfile -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))"`, {
     stdio: 'inherit',
     cwd: brocolliDir, // ensure we are in the GitHub workspace
   });
