@@ -9939,7 +9939,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.install_cli = void 0;
-const core = __importStar(__nccwpck_require__(1055));
 const child_process_1 = __nccwpck_require__(5317);
 const path_1 = __importDefault(__nccwpck_require__(6928));
 const fs = __importStar(__nccwpck_require__(9896));
@@ -9966,19 +9965,38 @@ function install_cli(parameters) {
             catch (e) {
                 console.log("Shipra executing command", e);
             }
-            let installCommand = `powershell -NoProfile -ExecutionPolicy Bypass -Command "
-    Invoke-WebRequest https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1"`;
+            //  let installCommand =  `powershell -NoProfile -ExecutionPolicy Bypass -Command "
+            //   Invoke-WebRequest https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1"`
             /**
              *   Set-ExecutionPolicy AllSigned -Scope Process -Force
               $ProgressPreference = "silentlyContinue"
               iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))
               $VERACODE_CLI = Get-Command veracode | Select-Object -ExpandProperty Definition
              */
-            core.info('Install command :' + installCommand);
-            (0, child_process_1.execSync)(installCommand, {
-                cwd: brocolliDir,
-                stdio: 'inherit',
-            });
+            // Run PowerShell script inside Node
+            const psCommand = `
+  Invoke-WebRequest https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1;
+  .\\install.ps1 -DestinationPath '${brocolliDir}'
+`;
+            try {
+                (0, child_process_1.execSync)(`powershell -NoProfile -ExecutionPolicy Bypass -Command "${psCommand}"`, {
+                    stdio: 'inherit',
+                    cwd: workspace, // ensure we are in the GitHub workspace
+                });
+            }
+            catch (err) {
+                console.error('CLI installation failed', err);
+                process.exit(1);
+            }
+            // Verify contents
+            // const files = fs.readdirSync(targetDir);
+            // console.log('Installed files:', files);
+            // }
+            //     core.info('Install command :' + installCommand)
+            //     execSync(installCommand, {
+            //       cwd: brocolliDir,
+            //       stdio: 'inherit',
+            //     });
             const files = fs.readdirSync(brocolliDir);
             console.log('Contents of folder:', files);
             try {
