@@ -100223,6 +100223,8 @@ function run_cli(command, debug, resultsfile, failBuildOnError) {
         console.log("ws", workspace);
         const brocolliDir = path_1.default.join(workspace, 'brocolli-cli');
         let cliPath = path_1.default.join(brocolliDir, 'install.ps1');
+        console.log("cliPath", cliPath);
+        console.log("command", command);
         try {
             yield (0, child_process_1.execSync)(`powershell "& ${cliPath} ${command}"`, { stdio: 'inherit' });
             // let curlCommandOutput = execSync(scanCommand)
