@@ -1,6 +1,8 @@
 import * as core from "@actions/core"
 import * as artifact from '@actions/artifact'
 import { execSync,exec } from "child_process";
+import path from "path";
+import * as fs from 'fs';
 
 
 export async function run_cli(command:string, debug:any, resultsfile:any, failBuildOnError:boolean) {
@@ -8,12 +10,13 @@ export async function run_cli(command:string, debug:any, resultsfile:any, failBu
     // core.info('Scan command :' + scanCommand)
 
     //let scanCommand = `curl -fsS https://tools.veracode.com/veracode-cli/install | sh && ./veracode ${command} `
+    const workspace = process.env.GITHUB_WORKSPACE ?? ''// always available in Actions
+    console.log("ws",workspace)
+     const brocolliDir = path.join(workspace, 'brocolli-cli');
+    let cliPath = path.join(brocolliDir,'install.ps1')
 try{
    await execSync(
-        `powershell -NoProfile -ExecutionPolicy Bypass -Command "
-        Set-Location ../veracode-cli;
-        & ./install.ps1 ${command}
-        "`,
+        `powershell "& ${cliPath} ${command}"`,
         { stdio: 'inherit' }
       );
        
