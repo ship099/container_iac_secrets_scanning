@@ -17,9 +17,7 @@ export async function ContainerScan(parameters:any) {
   env.VERACODE_API_KEY_ID= parameters.vid
   env.VERACODE_API_KEY_SECRET= parameters.vkey
 
-let scanCommand= `scan --source alpine:latest --type image`
- await run_cli(scanCommand,parameters.debug,'results.txt',parameters.fail_build_on_error)
-  
+
   // //run this when oputput is requires and we may create issues and/or PR decorations
   // if ( parameters.command == "scan" ){
 
