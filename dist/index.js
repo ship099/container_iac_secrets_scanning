@@ -100222,7 +100222,7 @@ function run_cli(command, debug, resultsfile, failBuildOnError) {
         const workspace = (_a = process.env.GITHUB_WORKSPACE) !== null && _a !== void 0 ? _a : ''; // always available in Actions
         console.log("ws", workspace);
         const brocolliDir = path_1.default.join(workspace, 'brocolli-cli');
-        let cliPath = path_1.default.join(brocolliDir, 'install.ps1');
+        let cliPath = path_1.default.join(brocolliDir, 'veracode');
         console.log("cliPath", cliPath);
         console.log("command", command);
         try {
