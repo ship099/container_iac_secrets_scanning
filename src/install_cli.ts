@@ -31,9 +31,7 @@ try{
   //  let installCommand =  `powershell -NoProfile -ExecutionPolicy Bypass -Command "
   //   Invoke-WebRequest https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1"`
     
-    // const psCommand1 =   `Set-ExecutionPolicy AllSigned -Scope Process -Force;
-    //   $ProgressPreference = "silentlyContinue";
-    const psCommand1 =  `iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))` ;
+    const psCommand1 =   `Set-ExecutionPolicy AllSigned -Scope Process -Force; $ProgressPreference = "silentlyContinue"; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))` ;
     const psCommand2 = `$VERACODE_CLI = Get-Command veracode | Select-Object -ExpandProperty Definition`
      
       // Run PowerShell script inside Node
