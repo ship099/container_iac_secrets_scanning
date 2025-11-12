@@ -9953,23 +9953,23 @@ function install_cli(parameters) {
             fs.mkdirSync(brocolliDir);
             // let installCommand = 'powershell -Command "Set-Location ..; New-Item -ItemType Directory -Force -Name veracode-cli; Set-Location veracode-cli; Invoke-WebRequest -Uri https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1;"'
             // let makeDirCommand = execSync(installCommandInitial);
-            const pwdCommand = `pwd`;
-            //const lsCommand = `cat ${scaResult.fileName}`
-            const lsCommand = `dir`;
-            try {
-                console.log("before executing pwd");
-                (0, child_process_1.execSync)(pwdCommand, { stdio: 'inherit' });
-                (0, child_process_1.execSync)(lsCommand, { stdio: 'inherit' });
-                console.log("after executing pwd");
-            }
-            catch (e) {
-                console.log("Shipra executing command", e);
-            }
+            // const pwdCommand = `pwd`
+            // //const lsCommand = `cat ${scaResult.fileName}`
+            // const lsCommand = `dir`
+            // try {
+            //   console.log("before executing pwd")
+            //   execSync(pwdCommand, { stdio: 'inherit' })
+            //   execSync(lsCommand, { stdio: 'inherit' })
+            //   console.log("after executing pwd")
+            // }
+            // catch (e) {
+            //   console.log("Shipra executing command", e)
+            // }
             //  let installCommand =  `powershell -NoProfile -ExecutionPolicy Bypass -Command "
             //   Invoke-WebRequest https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1"`
-            const psCommand1 = `Set-ExecutionPolicy AllSigned -Scope Process -Force;
-      $ProgressPreference = "silentlyContinue";
-      iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))`;
+            // const psCommand1 =   `Set-ExecutionPolicy AllSigned -Scope Process -Force;
+            //   $ProgressPreference = "silentlyContinue";
+            const psCommand1 = `iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))`;
             const psCommand2 = `$VERACODE_CLI = Get-Command veracode | Select-Object -ExpandProperty Definition`;
             // Run PowerShell script inside Node
             //   const psCommand = `
@@ -9994,7 +9994,7 @@ function install_cli(parameters) {
             //const psCommand = `Invoke-WebRequest -Uri 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile $env:TEMP\\veracode; & $env:TEMP\\veracode scan --source ${workspace} --type directory --format json --output results.json`
             (0, child_process_1.execSync)(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
             console.log('Download complete!');
-            (0, child_process_1.execSync)(`powershell.exe -Command "${psCommand2}"`, { stdio: 'inherit' });
+            //execSync(`powershell.exe -Command "${psCommand2}"`, { stdio: 'inherit' });
             const files = fs.readdirSync(brocolliDir);
             console.log('Contents of folder:', files);
             let pwdCommand1 = `cd ${brocolliDir} && dir`;
