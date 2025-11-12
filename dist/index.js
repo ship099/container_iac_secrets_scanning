@@ -9992,7 +9992,7 @@ function install_cli(parameters) {
             //const psCommand = `Invoke-WebRequest -Uri 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile $env:TEMP\\veracode; & $env:TEMP\\veracode scan --source ${workspace} --type directory --format json --output results.json`
             (0, child_process_1.execSync)(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
             console.log('Download complete!');
-            //execSync(`powershell.exe -Command "${psCommand2}"`, { stdio: 'inherit' });
+            (0, child_process_1.execSync)(`powershell.exe -Command "${psCommand2}"`, { stdio: 'inherit' });
             const files = fs.readdirSync(brocolliDir);
             console.log('Contents of folder:', files);
             let pwdCommand1 = `cd ${brocolliDir} && dir`;
