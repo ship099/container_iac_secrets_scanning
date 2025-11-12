@@ -9993,7 +9993,10 @@ function install_cli(parameters) {
             (0, child_process_1.execSync)(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
             console.log('Download complete!');
             //execSync(`powershell.exe -Command "${psCommand2}"`, { stdio: 'inherit' });
-            (0, child_process_1.execSync)('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
+            // execSync('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
+            const path1 = (0, child_process_1.execSync)('powershell "Get-Command veracode | Select-Object -ExpandProperty Source"', { shell: 'powershell.exe' })
+                .toString().trim();
+            (0, child_process_1.execSync)(`"${path1}" veracode`, { stdio: 'inherit' });
             const files = fs.readdirSync(brocolliDir);
             console.log('Contents of folder:', files);
             let pwdCommand1 = `cd ${brocolliDir} && dir`;
