@@ -9957,7 +9957,7 @@ function install_cli(parameters) {
             fs.mkdirSync(brocolliDir);
             // const psCommand1 =   `Set-ExecutionPolicy AllSigned -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1')) ` ;
             // const psCommand2 = `$VERACODE_CLI = Get-Command veracode | Select-Object -ExpandProperty Definition`
-            const psCommand1 = `Set-Content -Path "${brocolliDir}/downloaded.ps1" -Value ((New-Object System.Net.WebClient).DownloadString("https://tools.veracode.com/veracode-cli/install.ps1"))`;
+            const psCommand1 = `Set-Content -Path "${brocolliDir}/downloaded.ps1" -Value ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))`;
             (0, child_process_1.execSync)(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
             console.log('Download complete!');
             const files = fs.readdirSync(brocolliDir);

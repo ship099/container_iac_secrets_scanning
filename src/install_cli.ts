@@ -16,7 +16,7 @@ try{
     // const psCommand1 =   `Set-ExecutionPolicy AllSigned -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1')) ` ;
     // const psCommand2 = `$VERACODE_CLI = Get-Command veracode | Select-Object -ExpandProperty Definition`
      
-  const psCommand1 = `Set-Content -Path "${brocolliDir}/downloaded.ps1" -Value ((New-Object System.Net.WebClient).DownloadString("https://tools.veracode.com/veracode-cli/install.ps1"))`
+  const psCommand1 = `Set-Content -Path "${brocolliDir}/downloaded.ps1" -Value ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))`
  
 
 
