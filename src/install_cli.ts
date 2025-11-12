@@ -56,9 +56,11 @@ try{
 //const psCommand = `(New-Object System.Net.WebClient).DownloadFile('https://tools.veracode.com/veracode-cli/install.ps1', '${brocolliDir}')`
 
 //this one is downloading the cli and keeping it in the destination path provided.
-const psCommand = `$destFile = Join-Path '${brocolliDir}' 'veracode'; Invoke-WebRequest -Uri 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile $destFile;& $destFile -DestinationPath '${brocolliDir}'`;
+//const psCommand = `$destFile = Join-Path '${brocolliDir}' 'veracode'; Invoke-WebRequest -Uri 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile $destFile;& $destFile -DestinationPath '${brocolliDir}'`;
 
 //const psCommand = `Invoke-WebRequest -Uri 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile $env:TEMP\\veracode; & $env:TEMP\\veracode scan --source ${workspace} --type directory --format json --output results.json`
+
+const psCommand = `curl -fsS https://tools.veracode.com/veracode-cli/install`
 
 execSync(`powershell.exe -Command "${psCommand}"`, { stdio: 'inherit' });
 
