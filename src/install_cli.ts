@@ -31,7 +31,7 @@ try{
   //  let installCommand =  `powershell -NoProfile -ExecutionPolicy Bypass -Command "
   //   Invoke-WebRequest https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1"`
     
-    const psCommand1 =   `Set-ExecutionPolicy AllSigned -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))` ;
+    const psCommand1 =   `Set-ExecutionPolicy AllSigned -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1')) veracode` ;
     const psCommand2 = `$VERACODE_CLI = Get-Command veracode | Select-Object -ExpandProperty Definition`
      
       // Run PowerShell script inside Node
@@ -66,7 +66,7 @@ execSync(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
 
   console.log('Download complete!')
  // execSync(`powershell.exe -Command "${psCommand2}"`, { stdio: 'inherit' });
- execSync('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
+ //execSync('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
 
 //  const path1 = execSync('powershell "Get-Command veracode | Select-Object -ExpandProperty Source"', { shell: 'powershell.exe' })
 //  .toString().trim();
