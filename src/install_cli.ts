@@ -56,19 +56,19 @@ try{
 //const psCommand = `(New-Object System.Net.WebClient).DownloadFile('https://tools.veracode.com/veracode-cli/install.ps1', '${brocolliDir}')`
 
 //this one is downloading the cli and keeping it in the destination path provided.
-//const psCommand = `$destFile = Join-Path '${brocolliDir}' 'veracode'; Invoke-WebRequest -Uri 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile $destFile;& $destFile -DestinationPath '${brocolliDir}'`;
+const psCommand = `$destFile = Join-Path '${brocolliDir}' 'veracode'; Invoke-WebRequest -Uri 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile $destFile;& $destFile -DestinationPath '${brocolliDir}'`;
 
 //const psCommand = `Invoke-WebRequest -Uri 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile $env:TEMP\\veracode; & $env:TEMP\\veracode scan --source ${workspace} --type directory --format json --output results.json`
 
-execSync(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
+execSync(`powershell.exe -Command "${psCommand}"`, { stdio: 'inherit' });
 
   console.log('Download complete!')
-  //execSync(`powershell.exe -Command "${psCommand2}"`, { stdio: 'inherit' });
+ // execSync(`powershell.exe -Command "${psCommand2}"`, { stdio: 'inherit' });
  // execSync('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
 
- const path1 = execSync('powershell "Get-Command veracode | Select-Object -ExpandProperty Source"', { shell: 'powershell.exe' })
- .toString().trim();
-execSync(`"${path1}" veracode`, { stdio: 'inherit' });
+//  const path1 = execSync('powershell "Get-Command veracode | Select-Object -ExpandProperty Source"', { shell: 'powershell.exe' })
+//  .toString().trim();
+// execSync(`"${path1}" veracode`, { stdio: 'inherit' });
 
     const files = fs.readdirSync(brocolliDir);
     console.log('Contents of folder:', files);
