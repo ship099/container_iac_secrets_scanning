@@ -63,8 +63,8 @@ try{
 execSync(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
 
   console.log('Download complete!')
-  execSync(`powershell.exe -Command "${psCommand2}"`, { stdio: 'inherit' });
-
+  //execSync(`powershell.exe -Command "${psCommand2}"`, { stdio: 'inherit' });
+  execSync('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
     const files = fs.readdirSync(brocolliDir);
     console.log('Contents of folder:', files);
 let pwdCommand1 = `cd ${brocolliDir} && dir`
