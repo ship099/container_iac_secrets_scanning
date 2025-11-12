@@ -31,10 +31,10 @@ try{
   //  let installCommand =  `powershell -NoProfile -ExecutionPolicy Bypass -Command "
   //   Invoke-WebRequest https://tools.veracode.com/veracode-cli/install.ps1 -OutFile install.ps1"`
     
-    // const psCommand =   `Set-ExecutionPolicy AllSigned -Scope Process -Force;
-    //   $ProgressPreference = "silentlyContinue";
-    //   iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1') scan --source alpine:latest --type image) ;`
-     // $VERACODE_CLI = Get-Command veracode | Select-Object -ExpandProperty Definition`
+    const psCommand1 =   `Set-ExecutionPolicy AllSigned -Scope Process -Force;
+      $ProgressPreference = "silentlyContinue";
+      iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))` ;
+    const psCommand2 = `$VERACODE_CLI = Get-Command veracode | Select-Object -ExpandProperty Definition`
      
       // Run PowerShell script inside Node
 //   const psCommand = `
@@ -60,10 +60,11 @@ try{
 //this one is downloading the cli and keeping it in the destination path provided.
 //const psCommand = `$destFile = Join-Path '${brocolliDir}' 'veracode'; Invoke-WebRequest -Uri 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile $destFile;& $destFile -DestinationPath '${brocolliDir}'`;
 
-const psCommand = `Invoke-WebRequest -Uri 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile $env:TEMP\\veracode; & $env:TEMP\\veracode scan --source ${workspace} --type directory --format json --output results.json`
+//const psCommand = `Invoke-WebRequest -Uri 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile $env:TEMP\\veracode; & $env:TEMP\\veracode scan --source ${workspace} --type directory --format json --output results.json`
 
-execSync(`powershell.exe -Command "${psCommand}"`, { stdio: 'inherit' });
+execSync(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
   console.log('Download complete!')
+  execSync(`powershell.exe -Command "${psCommand2}"`, { stdio: 'inherit' });
 
     const files = fs.readdirSync(brocolliDir);
     console.log('Contents of folder:', files);
