@@ -13,10 +13,11 @@ try{
     fs.mkdirSync(brocolliDir);
  
     
-    // const psCommand1 =   `Set-ExecutionPolicy AllSigned -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1')) ` ;
+     const psCommand1 =   `Set-ExecutionPolicy AllSigned -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1')) ` ;
     // const psCommand2 = `$VERACODE_CLI = Get-Command veracode | Select-Object -ExpandProperty Definition`
      
-  const psCommand1 = `Set-Content -Path "${brocolliDir}/downloaded.ps1" -Value ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))`
+    //this one shows downloaded.ps1 in the directory but actually cli is not getting downloaded as we are not getting any version numbers.
+  //const psCommand1 = `Set-Content -Path "${brocolliDir}/downloaded.ps1" -Value ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))`
  
 
 
@@ -27,7 +28,7 @@ execSync(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
 
     const files = fs.readdirSync(brocolliDir);
     console.log('Contents of folder:', files);
-let pwdCommand1 = `cd ${brocolliDir} && dir`
+let pwdCommand1 = `dir`
   try {
     console.log("before executing pwd")
     execSync(pwdCommand1, { stdio: 'inherit' })
