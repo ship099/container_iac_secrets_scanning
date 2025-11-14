@@ -9963,7 +9963,7 @@ function install_cli(parameters) {
             ];
             // execSync(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
             console.log('Download complete!');
-            const child = (0, child_process_1.spawn)('powershell.exe', args, {
+            const child = yield (0, child_process_1.spawn)('powershell.exe', args, {
                 stdio: 'inherit',
                 shell: true, // Using shell: true can sometimes help with command resolution on Windows
             });
@@ -9978,7 +9978,7 @@ function install_cli(parameters) {
             //console.log('Contents of folder:', files);
             // "$env:APPDATA" 
             console.log("appdata", process.env.APPDATA);
-            let pwdCommand1 = `dir`;
+            let pwdCommand1 = `cd ${process.env.APPDATA} & dir`;
             try {
                 console.log("before executing pwd");
                 (0, child_process_1.execSync)(pwdCommand1, { stdio: 'inherit' });

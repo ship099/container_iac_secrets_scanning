@@ -24,7 +24,7 @@ try{
 
  // execSync(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
   console.log('Download complete!')
-  const child = spawn('powershell.exe', args, {
+  const child = await spawn('powershell.exe', args, {
     stdio: 'inherit', // Pipes the output to the console for real-time viewing
     shell: true,      // Using shell: true can sometimes help with command resolution on Windows
   });
@@ -43,7 +43,7 @@ try{
     //console.log('Contents of folder:', files);
    // "$env:APPDATA" 
    console.log("appdata",process.env.APPDATA)
-let pwdCommand1 = `dir`
+let pwdCommand1 = `cd ${process.env.APPDATA} & dir`
   try {
     console.log("before executing pwd")
     execSync(pwdCommand1, { stdio: 'inherit' })
