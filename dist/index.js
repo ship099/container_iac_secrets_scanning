@@ -9629,7 +9629,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ContainerScan = void 0;
 const process_1 = __nccwpck_require__(932);
-const run_command_1 = __nccwpck_require__(2937);
 const install_cli_1 = __nccwpck_require__(4196);
 function ContainerScan(parameters) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -9639,7 +9638,7 @@ function ContainerScan(parameters) {
         process_1.env.VERACODE_API_KEY_SECRET = parameters.vkey;
         let results_file = 'results.json';
         let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format ${parameters.format} --output ${results_file}`;
-        (0, run_command_1.run_cli)(scanCommandOriginal, parameters.debug, 'results.json', parameters.fail_build_on_error);
+        //run_cli(scanCommandOriginal,parameters.debug,'results.json',parameters.fail_build_on_error)
         // //run this when oputput is requires and we may create issues and/or PR decorations
         // if ( parameters.command == "scan" ){
         //   let results_file = ""
@@ -9971,9 +9970,14 @@ function install_cli(parameters) {
                 // This catches errors in the spawn process itself (e.g., powershell.exe not found)
                 console.error(`Failed to start PowerShell process: ${error.message}`);
             });
+            let output = '';
+            child.stdout.on('data', (data) => {
+                output = `${output}${data}`;
+            });
             child.on('close', (code) => {
                 console.log(`Child process exited with code ${code}`);
             });
+            console.log("data", output);
             const files = fs.readdirSync(brocolliDir);
             //console.log('Contents of folder:', files);
             // "$env:APPDATA" 
@@ -10004,94 +10008,6 @@ function install_cli(parameters) {
     });
 }
 exports.install_cli = install_cli;
-
-
-/***/ }),
-
-/***/ 2937:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.run_cli = void 0;
-const core = __importStar(__nccwpck_require__(1055));
-const child_process_1 = __nccwpck_require__(5317);
-const path_1 = __importDefault(__nccwpck_require__(6928));
-function run_cli(command, debug, resultsfile, failBuildOnError) {
-    var _a;
-    return __awaiter(this, void 0, void 0, function* () {
-        // let scanCommand = `../veracode-cli/veracode ${command}`
-        // core.info('Scan command :' + scanCommand)
-        //let scanCommand = `curl -fsS https://tools.veracode.com/veracode-cli/install | sh && ./veracode ${command} `
-        const workspace = (_a = process.env.GITHUB_WORKSPACE) !== null && _a !== void 0 ? _a : ''; // always available in Actions
-        console.log("ws", workspace);
-        const brocolliDir = path_1.default.join(workspace, 'brocolli-cli');
-        let cliPath = path_1.default.join(brocolliDir, 'downloaded.ps1');
-        console.log("cliPath", cliPath);
-        console.log("command", command);
-        try {
-            yield (0, child_process_1.execSync)(`powershell "& ${cliPath} ${command}"`, { stdio: 'inherit' });
-            // let curlCommandOutput = execSync(scanCommand)
-            if (debug == "true") {
-                core.info('#### DEBUG START ####');
-                core.info('run_command.ts - command output');
-                //       core.info('command output : '+curlCommandOutput)
-                core.info('#### DEBUG END ####');
-            }
-            //     core.info(`${curlCommandOutput}`)
-        }
-        catch (error) {
-            //  const failureMessage = `Veracode CLI scan failed. Exit code: ${error.status}, Command: ${scanCommand}`;
-            console.log(error);
-            const failureMessage = `Veracode CLI scan failed. Exit code: ${error.status},`;
-            const failBuildOnErrorBool = String(failBuildOnError).toLowerCase() === "true";
-            if (failBuildOnErrorBool) {
-                core.setFailed(failureMessage);
-                core.info(`Note: Build failed due to break_build_on_error flag being set to true.`);
-            }
-            else {
-                core.error(failureMessage);
-            }
-        }
-    });
-}
-exports.run_cli = run_cli;
 
 
 /***/ }),

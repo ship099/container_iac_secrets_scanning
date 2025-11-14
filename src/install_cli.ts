@@ -33,11 +33,15 @@ try{
     // This catches errors in the spawn process itself (e.g., powershell.exe not found)
     console.error(`Failed to start PowerShell process: ${error.message}`);
   });
+  let output: string = '';
+          child.stdout!.on('data', (data) => {
+              output = `${output}${data}`;
+          });
 
   child.on('close', (code) => {
     console.log(`Child process exited with code ${code}`);
   });
-
+console.log("data",output)
 
     const files = fs.readdirSync(brocolliDir);
     //console.log('Contents of folder:', files);

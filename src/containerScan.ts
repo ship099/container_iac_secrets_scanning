@@ -20,7 +20,7 @@ export async function ContainerScan(parameters:any) {
   let results_file = 'results.json'
   let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format ${parameters.format} --output ${results_file}`
     
-  run_cli(scanCommandOriginal,parameters.debug,'results.json',parameters.fail_build_on_error)
+  //run_cli(scanCommandOriginal,parameters.debug,'results.json',parameters.fail_build_on_error)
 
   // //run this when oputput is requires and we may create issues and/or PR decorations
   // if ( parameters.command == "scan" ){
