@@ -12,7 +12,7 @@ import { store_artifacts } from "./store_artifacts";
 export async function ContainerScan(parameters:any) {
 
   //install the cli
-  install_cli(parameters)
+ await install_cli(parameters)
 
   env.VERACODE_API_KEY_ID= parameters.vid
   env.VERACODE_API_KEY_SECRET= parameters.vkey

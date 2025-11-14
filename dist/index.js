@@ -9634,7 +9634,7 @@ const install_cli_1 = __nccwpck_require__(4196);
 function ContainerScan(parameters) {
     return __awaiter(this, void 0, void 0, function* () {
         //install the cli
-        (0, install_cli_1.install_cli)(parameters);
+        yield (0, install_cli_1.install_cli)(parameters);
         process_1.env.VERACODE_API_KEY_ID = parameters.vid;
         process_1.env.VERACODE_API_KEY_SECRET = parameters.vkey;
         let results_file = 'results.json';
