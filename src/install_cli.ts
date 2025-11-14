@@ -23,31 +23,57 @@ try{
 
 
  // execSync(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
-  console.log('Download complete!')
-  const child = await spawn('powershell.exe', args, {
-    stdio: 'inherit', // Pipes the output to the console for real-time viewing
-    shell: true,      // Using shell: true can sometimes help with command resolution on Windows
-  });
-console.log("child",child)
-  child.on('error', (error) => {
-    // This catches errors in the spawn process itself (e.g., powershell.exe not found)
-    console.error(`Failed to start PowerShell process: ${error.message}`);
-  });
-  let output: string = '';
-  // child.stdout!.on('data', (data) => {
-  //             output = `${output}${data}`;
-  //         });
+  // console.log('Download complete!')
+  // const child = await spawn('powershell.exe', args, {
+  //   stdio: 'inherit', // Pipes the output to the console for real-time viewing
+  //   shell: true,      // Using shell: true can sometimes help with command resolution on Windows
+  // });
 
-  child.on('close', (code) => {
-    console.log(`Child process exited with code ${code}`);
-  });
-console.log("data",output)
+// Combined PowerShell command
+const psCommand = `
+$script = "$env:TEMP\\install.ps1";
+Invoke-WebRequest 'https://tools.com/install.ps1' -OutFile $script;
+Set-ExecutionPolicy AllSigned -Scope Process -Force;
+powershell -File $script
+`;
 
-    const files = fs.readdirSync(brocolliDir);
-    //console.log('Contents of folder:', files);
-   // "$env:APPDATA" 
+// Spawn PowerShell
+const child = spawn("powershell.exe", [
+  "-NoProfile",
+  "-Command",
+  psCommand
+]);
+
+// Output handling
+child.stdout.on("data", data => {
+  console.log("OUT:", data.toString());
+});
+
+child.stderr.on("data", data => {
+  console.error("ERR:", data.toString());
+});
+
+child.on("close", code => {
+  console.log("Process exited with code", code);
+});
+
+// console.log("child",child)
+//   child.on('error', (error) => {
+//     // This catches errors in the spawn process itself (e.g., powershell.exe not found)
+//     console.error(`Failed to start PowerShell process: ${error.message}`);
+//   });
+//   let output: string = '';
+//   // child.stdout!.on('data', (data) => {
+//   //             output = `${output}${data}`;
+//   //         });
+
+//   child.on('close', (code) => {
+//     console.log(`Child process exited with code ${code}`);
+//   });
+// console.log("data",output)
+
    console.log("appdata",process.env.APPDATA)
-let pwdCommand1 = `cd ${process.env.APPDATA} & dir`
+let pwdCommand1 = `cd ${process.env.TEMP} & dir`
   try {
     console.log("before executing pwd")
     execSync(pwdCommand1, { stdio: 'inherit' })
