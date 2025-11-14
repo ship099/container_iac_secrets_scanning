@@ -9969,7 +9969,7 @@ function install_cli(parameters) {
             // Combined PowerShell command
             const psCommand = `
 $script = "$env:TEMP\\install.ps1";
-Invoke-WebRequest 'https://tools.com/install.ps1' -OutFile $script;
+Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile $script;
 Set-ExecutionPolicy AllSigned -Scope Process -Force;
 powershell -File $script
 `;
