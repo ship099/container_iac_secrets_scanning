@@ -13,10 +13,18 @@ try{
     fs.mkdirSync(brocolliDir);
  
     
-  const psCommand1 = `Set-ExecutionPolicy AllSigned -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1')) `
+  const psCommand1 = `Set-ExecutionPolicy AllSigned -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))`
+  const args: string[] = [
+    '-NoProfile', // Prevents loading the user profile, for predictability
+    '-Command',
+    psCommand1
+  ];
+
+
+
  // execSync(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
   console.log('Download complete!')
-  const child = spawn('powershell.exe', ['-Command', psCommand1], {
+  const child = spawn('powershell.exe', args, {
     stdio: 'inherit', // Pipes the output to the console for real-time viewing
     shell: true,      // Using shell: true can sometimes help with command resolution on Windows
   });

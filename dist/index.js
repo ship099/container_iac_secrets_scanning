@@ -9955,10 +9955,15 @@ function install_cli(parameters) {
             //console.log("ws",workspace)
             const brocolliDir = path_1.default.join(workspace, 'brocolli-cli');
             fs.mkdirSync(brocolliDir);
-            const psCommand1 = `Set-ExecutionPolicy AllSigned -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1')) `;
+            const psCommand1 = `Set-ExecutionPolicy AllSigned -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))`;
+            const args = [
+                '-NoProfile',
+                '-Command',
+                psCommand1
+            ];
             // execSync(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
             console.log('Download complete!');
-            const child = (0, child_process_1.spawn)('powershell.exe', ['-Command', psCommand1], {
+            const child = (0, child_process_1.spawn)('powershell.exe', args, {
                 stdio: 'inherit',
                 shell: true, // Using shell: true can sometimes help with command resolution on Windows
             });
