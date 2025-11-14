@@ -9956,10 +9956,23 @@ function install_cli(parameters) {
             const brocolliDir = path_1.default.join(workspace, 'brocolli-cli');
             fs.mkdirSync(brocolliDir);
             const psCommand1 = `Set-ExecutionPolicy AllSigned -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1')) `;
-            (0, child_process_1.execSync)(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
+            // execSync(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
             console.log('Download complete!');
+            const child = (0, child_process_1.spawn)('powershell.exe', ['-Command', psCommand1], {
+                stdio: 'inherit',
+                shell: true, // Using shell: true can sometimes help with command resolution on Windows
+            });
+            child.on('error', (error) => {
+                // This catches errors in the spawn process itself (e.g., powershell.exe not found)
+                console.error(`Failed to start PowerShell process: ${error.message}`);
+            });
+            child.on('close', (code) => {
+                console.log(`Child process exited with code ${code}`);
+            });
             const files = fs.readdirSync(brocolliDir);
             //console.log('Contents of folder:', files);
+            // "$env:APPDATA" 
+            console.log("appdata", process.env.APPDATA);
             let pwdCommand1 = `dir`;
             try {
                 console.log("before executing pwd");
