@@ -9966,14 +9966,15 @@ function install_cli(parameters) {
                 stdio: 'inherit',
                 shell: true, // Using shell: true can sometimes help with command resolution on Windows
             });
+            console.log("child", child);
             child.on('error', (error) => {
                 // This catches errors in the spawn process itself (e.g., powershell.exe not found)
                 console.error(`Failed to start PowerShell process: ${error.message}`);
             });
             let output = '';
-            child.stdout.on('data', (data) => {
-                output = `${output}${data}`;
-            });
+            // child.stdout!.on('data', (data) => {
+            //             output = `${output}${data}`;
+            //         });
             child.on('close', (code) => {
                 console.log(`Child process exited with code ${code}`);
             });
