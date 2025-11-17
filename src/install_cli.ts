@@ -65,7 +65,7 @@ child.on("close", code => {
   const appdata = process.env.APPDATA ?? "";
   const files = fs.readdirSync(appdata)
   const files2 = files.filter(f => f.toLowerCase().endsWith(".ps1"));
-  let pwdCommand1 = `dir ${process.env.APPDATA}`
+  let pwdCommand1 = `dir ${process.env.APPDATA}/veracode`
   try {
     console.log("before executing pwd")
     execSync(pwdCommand1, { stdio: 'inherit' })
@@ -79,7 +79,7 @@ child.on("close", code => {
 console.log("files",files)
 const cliPath = path.join(appdata, 'veracode');
 execSync(
-  `powershell "& ${cliPath} ${scanCommandOriginal}"`,
+  `powershell "& ${cliPath}/install.ps1 ${scanCommandOriginal}"`,
   { stdio: 'inherit' }
 );
 /**
