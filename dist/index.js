@@ -9978,7 +9978,7 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
                 "-NoProfile",
                 "-ExecutionPolicy", "Bypass",
                 "-Command",
-                psCommand
+                psCommand1
             ]);
             // Output handling
             child.on("data", data => {

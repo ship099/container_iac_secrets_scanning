@@ -43,7 +43,7 @@ const child = spawn("powershell.exe", [
   "-NoProfile",
   "-ExecutionPolicy", "Bypass",
   "-Command",
-  psCommand
+  psCommand1
 ]);
 
 // Output handling
