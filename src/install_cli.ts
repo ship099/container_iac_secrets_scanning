@@ -59,13 +59,19 @@ child.on("close", code => {
   console.log("Process exited with code", code);
   console.log(process.env.TEMP)
   const tempDir = process.env.TEMP ?? '';
-  const filePath = path.join(tempDir, "install.ps1");
+  const files = fs.readdirSync(tempDir)
+  files.filter(f => f.toLowerCase().endsWith(".ps1"));
+
+
+//  const filePath = path.join(tempDir, "install.ps1");
   
-  if (fs.existsSync(filePath)) {
-    console.log("Found:", filePath);
-  } else {
-    console.log("File not found");
-  }
+
+  //checking the file exists in temp folder or not
+  // if (fs.existsSync(filePath)) {
+  //   console.log("Found:", filePath);
+  // } else {
+  //   console.log("File not found");
+  // }
 
   // let pwdCommand1 = `cd ${process.env.TEMP} & dir`
   // try {
