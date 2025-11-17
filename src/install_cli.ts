@@ -61,9 +61,9 @@ child.on("close", code => {
   const tempDir = process.env.TEMP ?? '';
   const appdata = process.env.APPDATA ?? "";
   const files = fs.readdirSync(appdata)
-  files.filter(f => f.toLowerCase().endsWith(".ps1"));
-  execSync('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
-console.log("files",files)
+  const files2 = files.filter(f => f.toLowerCase().endsWith(".ps1"));
+  //execSync('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
+console.log("files",files2)
 
 
 /**
