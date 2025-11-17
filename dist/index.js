@@ -9955,7 +9955,7 @@ function install_cli(parameters) {
             //console.log("ws",workspace)
             const brocolliDir = path_1.default.join(workspace, 'brocolli-cli');
             fs.mkdirSync(brocolliDir);
-            let results_file = 'results.json';
+            let results_file = 'results.txt';
             const psCommand1 = `Set-ExecutionPolicy AllSigned -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))`;
             const args = [
                 '-NoProfile',

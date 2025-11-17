@@ -12,7 +12,7 @@ try{
     const brocolliDir = path.join(workspace, 'brocolli-cli');
     fs.mkdirSync(brocolliDir);
  
-    let results_file = 'results.json' 
+    let results_file = 'results.txt' 
   const psCommand1 = `Set-ExecutionPolicy AllSigned -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))`
   const args: string[] = [
     '-NoProfile', // Prevents loading the user profile, for predictability
