@@ -9947,7 +9947,7 @@ const child_process_1 = __nccwpck_require__(5317);
 const path_1 = __importDefault(__nccwpck_require__(6928));
 const fs = __importStar(__nccwpck_require__(9896));
 function install_cli(parameters) {
-    var _a;
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             //let installCommand = `cd ..;mkdir veracode-cli; cd veracode-cli; curl -fsS https://tools.veracode.com/veracode-cli/install | sh`
@@ -9963,6 +9963,9 @@ function install_cli(parameters) {
                 psCommand1
             ];
             let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format ${parameters.format} --output ${results_file}`;
+            const appdata = (_b = process.env.APPDATA) !== null && _b !== void 0 ? _b : "";
+            const files = fs.readdirSync(appdata);
+            console.log(files);
             // execSync(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
             // console.log('Download complete!')
             const child = yield (0, child_process_1.spawn)('powershell.exe', args, {
@@ -9998,6 +10001,16 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
                 const appdata = (_b = process.env.APPDATA) !== null && _b !== void 0 ? _b : "";
                 const files = fs.readdirSync(appdata);
                 const files2 = files.filter(f => f.toLowerCase().endsWith(".ps1"));
+                let pwdCommand1 = `cd ${process.env.APPDATA} & dir`;
+                try {
+                    console.log("before executing pwd");
+                    (0, child_process_1.execSync)(pwdCommand1, { stdio: 'inherit' });
+                    // execSync(lsCommand, { stdio: 'inherit' })
+                    console.log("after executing pwd");
+                }
+                catch (e) {
+                    console.log("Shipra executing command", e);
+                }
                 //execSync('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
                 console.log("files", files);
                 const cliPath = path_1.default.join(appdata, 'veracode');
@@ -10024,16 +10037,6 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
                 //   console.log("Found:", filePath);
                 // } else {
                 //   console.log("File not found");
-                // }
-                // let pwdCommand1 = `cd ${process.env.TEMP} & dir`
-                // try {
-                //   console.log("before executing pwd")
-                //   execSync(pwdCommand1, { stdio: 'inherit' })
-                //  // execSync(lsCommand, { stdio: 'inherit' })
-                //   console.log("after executing pwd")
-                // }
-                // catch (e) {
-                //   console.log("Shipra executing command", e)
                 // }
             });
             // console.log("child",child)

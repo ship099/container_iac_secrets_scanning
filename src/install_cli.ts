@@ -21,7 +21,9 @@ try{
   ];
 
   let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format ${parameters.format} --output ${results_file}`
-   
+  const appdata = process.env.APPDATA ?? "";
+  const files = fs.readdirSync(appdata)
+  console.log(files)
 
  // execSync(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
   // console.log('Download complete!')
@@ -63,6 +65,16 @@ child.on("close", code => {
   const appdata = process.env.APPDATA ?? "";
   const files = fs.readdirSync(appdata)
   const files2 = files.filter(f => f.toLowerCase().endsWith(".ps1"));
+  let pwdCommand1 = `cd ${process.env.APPDATA} & dir`
+  try {
+    console.log("before executing pwd")
+    execSync(pwdCommand1, { stdio: 'inherit' })
+   // execSync(lsCommand, { stdio: 'inherit' })
+    console.log("after executing pwd")
+  }
+  catch (e) {
+    console.log("Shipra executing command", e)
+  }
   //execSync('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
 console.log("files",files)
 const cliPath = path.join(appdata, 'veracode');
@@ -97,16 +109,7 @@ execSync(
   //   console.log("File not found");
   // }
 
-  // let pwdCommand1 = `cd ${process.env.TEMP} & dir`
-  // try {
-  //   console.log("before executing pwd")
-  //   execSync(pwdCommand1, { stdio: 'inherit' })
-  //  // execSync(lsCommand, { stdio: 'inherit' })
-  //   console.log("after executing pwd")
-  // }
-  // catch (e) {
-  //   console.log("Shipra executing command", e)
-  // }
+  
 });
 
 // console.log("child",child)
