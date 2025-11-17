@@ -57,6 +57,16 @@ child.on("data", data => {
 
 child.on("close", code => {
   console.log("Process exited with code", code);
+  let pwdCommand1 = `cd ${process.env.GITHUB_WORKSPACE} & dir`
+  try {
+    console.log("before executing pwd")
+    execSync(pwdCommand1, { stdio: 'inherit' })
+   // execSync(lsCommand, { stdio: 'inherit' })
+    console.log("after executing pwd")
+  }
+  catch (e) {
+    console.log("Shipra executing command", e)
+  }
 });
 
 // console.log("child",child)
@@ -75,16 +85,16 @@ child.on("close", code => {
 // console.log("data",output)
 
    console.log("appdata",process.env.APPDATA)
-let pwdCommand1 = `cd ${process.env.GITHUB_WORKSPACE} & dir`
-  try {
-    console.log("before executing pwd")
-    execSync(pwdCommand1, { stdio: 'inherit' })
-   // execSync(lsCommand, { stdio: 'inherit' })
-    console.log("after executing pwd")
-  }
-  catch (e) {
-    console.log("Shipra executing command", e)
-  }
+// let pwdCommand1 = `cd ${process.env.GITHUB_WORKSPACE} & dir`
+//   try {
+//     console.log("before executing pwd")
+//     execSync(pwdCommand1, { stdio: 'inherit' })
+//    // execSync(lsCommand, { stdio: 'inherit' })
+//     console.log("after executing pwd")
+//   }
+//   catch (e) {
+//     console.log("Shipra executing command", e)
+//   }
     
    // let curlCommandOutputInitial = execSync(installCommandInitial)
    // let curlCommandOutput = execSync(installCommand)
