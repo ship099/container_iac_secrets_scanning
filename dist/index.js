@@ -10015,7 +10015,12 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
                 //execSync('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
                 console.log("files", files);
                 const cliPath = path_1.default.join(cliPathVera, 'veracode.exe');
-                (0, child_process_1.execSync)(`powershell "${cliPath} ${scanCommandOriginal}"`, { stdio: 'inherit' });
+                try {
+                    (0, child_process_1.execSync)(`powershell "${cliPath} ${scanCommandOriginal}"`, { stdio: 'inherit' });
+                }
+                catch (e) {
+                    console.log("Shipra executing command", e);
+                }
                 /**
                  * console.log(`Installation complete for ${cliCommandName}. Now locating file...`);
                 

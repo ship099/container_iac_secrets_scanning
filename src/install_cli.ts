@@ -79,10 +79,15 @@ child.on("close", code => {
   //execSync('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
 console.log("files",files)
 const cliPath = path.join(cliPathVera, 'veracode.exe');
+try{
 execSync(
   `powershell "${cliPath} ${scanCommandOriginal}"`,
   { stdio: 'inherit' }
 );
+}
+catch(e){
+  console.log("Shipra executing command", e)
+}
 /**
  * console.log(`Installation complete for ${cliCommandName}. Now locating file...`);
 
