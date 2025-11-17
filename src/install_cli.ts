@@ -40,6 +40,7 @@ powershell -File $script
 // Spawn PowerShell
 const child = spawn("powershell.exe", [
   "-NoProfile",
+  "-ExecutionPolicy", "Bypass",
   "-Command",
   psCommand
 ]);

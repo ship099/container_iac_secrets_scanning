@@ -9976,6 +9976,7 @@ powershell -File $script
             // Spawn PowerShell
             const child = (0, child_process_1.spawn)("powershell.exe", [
                 "-NoProfile",
+                "-ExecutionPolicy", "Bypass",
                 "-Command",
                 psCommand
             ]);
