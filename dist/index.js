@@ -10001,7 +10001,7 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
                 const appdata = (_b = process.env.APPDATA) !== null && _b !== void 0 ? _b : "";
                 const files = fs.readdirSync(appdata);
                 const files2 = files.filter(f => f.toLowerCase().endsWith(".ps1"));
-                let pwdCommand1 = `cd ${process.env.APPDATA} & dir`;
+                let pwdCommand1 = `dir ${process.env.APPDATA}`;
                 try {
                     console.log("before executing pwd");
                     (0, child_process_1.execSync)(pwdCommand1, { stdio: 'inherit' });

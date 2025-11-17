@@ -65,7 +65,7 @@ child.on("close", code => {
   const appdata = process.env.APPDATA ?? "";
   const files = fs.readdirSync(appdata)
   const files2 = files.filter(f => f.toLowerCase().endsWith(".ps1"));
-  let pwdCommand1 = `cd ${process.env.APPDATA} & dir`
+  let pwdCommand1 = `dir ${process.env.APPDATA}`
   try {
     console.log("before executing pwd")
     execSync(pwdCommand1, { stdio: 'inherit' })
