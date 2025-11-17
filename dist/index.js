@@ -9989,7 +9989,7 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
             });
             child.on("close", code => {
                 console.log("Process exited with code", code);
-                let pwdCommand1 = `cd ${process.env.GITHUB_WORKSPACE} & dir`;
+                let pwdCommand1 = `cd ${process.env.TEMP} & dir`;
                 try {
                     console.log("before executing pwd");
                     (0, child_process_1.execSync)(pwdCommand1, { stdio: 'inherit' });

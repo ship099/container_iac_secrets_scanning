@@ -57,7 +57,7 @@ child.on("data", data => {
 
 child.on("close", code => {
   console.log("Process exited with code", code);
-  let pwdCommand1 = `cd ${process.env.GITHUB_WORKSPACE} & dir`
+  let pwdCommand1 = `cd ${process.env.TEMP} & dir`
   try {
     console.log("before executing pwd")
     execSync(pwdCommand1, { stdio: 'inherit' })
