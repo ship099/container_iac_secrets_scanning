@@ -9995,6 +9995,7 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
                 const appdata = (_b = process.env.APPDATA) !== null && _b !== void 0 ? _b : "";
                 const files = fs.readdirSync(appdata);
                 files.filter(f => f.toLowerCase().endsWith(".ps1"));
+                (0, child_process_1.execSync)('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
                 console.log("files", files);
                 /**
                  * console.log(`Installation complete for ${cliCommandName}. Now locating file...`);
