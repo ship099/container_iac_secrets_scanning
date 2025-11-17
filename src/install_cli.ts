@@ -12,7 +12,7 @@ try{
     const brocolliDir = path.join(workspace, 'brocolli-cli');
     fs.mkdirSync(brocolliDir);
  
-    
+    let results_file = 'results.json' 
   const psCommand1 = `Set-ExecutionPolicy AllSigned -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))`
   const args: string[] = [
     '-NoProfile', // Prevents loading the user profile, for predictability
@@ -20,7 +20,8 @@ try{
     psCommand1
   ];
 
-
+  let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format ${parameters.format} --output ${results_file}`
+   
 
  // execSync(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
   // console.log('Download complete!')
@@ -64,8 +65,11 @@ child.on("close", code => {
   const files2 = files.filter(f => f.toLowerCase().endsWith(".ps1"));
   //execSync('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
 console.log("files",files)
-
-
+const cliPath = path.join(appdata, 'veracode');
+execSync(
+  `powershell "& ${cliPath} ${scanCommandOriginal}"`,
+  { stdio: 'inherit' }
+);
 /**
  * console.log(`Installation complete for ${cliCommandName}. Now locating file...`);
 
