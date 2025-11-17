@@ -63,7 +63,7 @@ child.on("close", code => {
   const files = fs.readdirSync(appdata)
   const files2 = files.filter(f => f.toLowerCase().endsWith(".ps1"));
   //execSync('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
-console.log("files",files2)
+console.log("files",files)
 
 
 /**
@@ -149,44 +149,5 @@ catch(e){
 }
 }
 
-import { promisify } from 'util';
 
-// Promisify the exec function to use async/await
-const execPromise = promisify(exec);
-
-async function findCliLocation(cliName: string): Promise<string> {
-    try {
-        // Run the Windows 'where.exe' command to find the executable
-        const command = `where.exe ${cliName}`;
-        console.log(`Attempting to locate CLI with: ${command}`);
-
-        const { stdout, stderr } = await execPromise(command);
-
-        if (stderr) {
-            // Handle any errors from the where.exe command
-            throw new Error(`where.exe failed: ${stderr}`);
-        }
-
-        // The stdout will contain the full path(s). 
-        // We'll take the first one and trim any whitespace.
-        const cliPath = stdout.trim().split('\n')[0];
-
-        if (!cliPath) {
-            throw new Error(`'where.exe' returned no location for ${cliName}`);
-        }
-
-        console.log(`✅ CLI found at: ${cliPath}`);
-        return cliPath;
-
-    } catch (error:any) {
-        console.error(`Could not locate CLI: ${error.message}`);
-        // Depending on your needs, you might re-throw or return a default path
-        throw error;
-    }
-}
-
-// --- Usage Example ---
-// Replace 'your-cli-name' with the actual command you use to run the tool 
-// after installation (e.g., 'az', 'gh', 'scoop').
-const cliCommandName = 'veracode'; 
 

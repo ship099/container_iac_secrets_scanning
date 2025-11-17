@@ -9629,6 +9629,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ContainerScan = void 0;
 const process_1 = __nccwpck_require__(932);
+const run_command_1 = __nccwpck_require__(2937);
 const install_cli_1 = __nccwpck_require__(4196);
 function ContainerScan(parameters) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -9638,7 +9639,7 @@ function ContainerScan(parameters) {
         process_1.env.VERACODE_API_KEY_SECRET = parameters.vkey;
         let results_file = 'results.json';
         let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format ${parameters.format} --output ${results_file}`;
-        //run_cli(scanCommandOriginal,parameters.debug,'results.json',parameters.fail_build_on_error)
+        (0, run_command_1.run_cli)(scanCommandOriginal, parameters.debug, 'results.json', parameters.fail_build_on_error);
         // //run this when oputput is requires and we may create issues and/or PR decorations
         // if ( parameters.command == "scan" ){
         //   let results_file = ""
@@ -9996,7 +9997,7 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
                 const files = fs.readdirSync(appdata);
                 const files2 = files.filter(f => f.toLowerCase().endsWith(".ps1"));
                 //execSync('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
-                console.log("files", files2);
+                console.log("files", files);
                 /**
                  * console.log(`Installation complete for ${cliCommandName}. Now locating file...`);
                 
@@ -10071,40 +10072,94 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
     });
 }
 exports.install_cli = install_cli;
-const util_1 = __nccwpck_require__(9023);
-// Promisify the exec function to use async/await
-const execPromise = (0, util_1.promisify)(child_process_1.exec);
-function findCliLocation(cliName) {
+
+
+/***/ }),
+
+/***/ 2937:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.run_cli = void 0;
+const core = __importStar(__nccwpck_require__(1055));
+const child_process_1 = __nccwpck_require__(5317);
+const path_1 = __importDefault(__nccwpck_require__(6928));
+function run_cli(command, debug, resultsfile, failBuildOnError) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
+        // let scanCommand = `../veracode-cli/veracode ${command}`
+        // core.info('Scan command :' + scanCommand)
+        //let scanCommand = `curl -fsS https://tools.veracode.com/veracode-cli/install | sh && ./veracode ${command} `
+        const workspace = (_a = process.env.APPDATA) !== null && _a !== void 0 ? _a : ''; // always available in Actions
+        console.log("ws", workspace);
+        const cliPath = path_1.default.join(workspace, 'veracode');
+        //let cliPath = path.join(brocolliDir,'downloaded.ps1')
+        console.log("cliPath", cliPath);
+        console.log("command", command);
         try {
-            // Run the Windows 'where.exe' command to find the executable
-            const command = `where.exe ${cliName}`;
-            console.log(`Attempting to locate CLI with: ${command}`);
-            const { stdout, stderr } = yield execPromise(command);
-            if (stderr) {
-                // Handle any errors from the where.exe command
-                throw new Error(`where.exe failed: ${stderr}`);
+            yield (0, child_process_1.execSync)(`powershell "& ${cliPath} ${command}"`, { stdio: 'inherit' });
+            // let curlCommandOutput = execSync(scanCommand)
+            if (debug == "true") {
+                core.info('#### DEBUG START ####');
+                core.info('run_command.ts - command output');
+                //       core.info('command output : '+curlCommandOutput)
+                core.info('#### DEBUG END ####');
             }
-            // The stdout will contain the full path(s). 
-            // We'll take the first one and trim any whitespace.
-            const cliPath = stdout.trim().split('\n')[0];
-            if (!cliPath) {
-                throw new Error(`'where.exe' returned no location for ${cliName}`);
-            }
-            console.log(`✅ CLI found at: ${cliPath}`);
-            return cliPath;
+            //     core.info(`${curlCommandOutput}`)
         }
         catch (error) {
-            console.error(`Could not locate CLI: ${error.message}`);
-            // Depending on your needs, you might re-throw or return a default path
-            throw error;
+            //  const failureMessage = `Veracode CLI scan failed. Exit code: ${error.status}, Command: ${scanCommand}`;
+            console.log(error);
+            const failureMessage = `Veracode CLI scan failed. Exit code: ${error.status},`;
+            const failBuildOnErrorBool = String(failBuildOnError).toLowerCase() === "true";
+            if (failBuildOnErrorBool) {
+                core.setFailed(failureMessage);
+                core.info(`Note: Build failed due to break_build_on_error flag being set to true.`);
+            }
+            else {
+                core.error(failureMessage);
+            }
         }
     });
 }
-// --- Usage Example ---
-// Replace 'your-cli-name' with the actual command you use to run the tool 
-// after installation (e.g., 'az', 'gh', 'scoop').
-const cliCommandName = 'veracode';
+exports.run_cli = run_cli;
 
 
 /***/ }),

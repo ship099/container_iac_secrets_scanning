@@ -10,10 +10,10 @@ export async function run_cli(command:string, debug:any, resultsfile:any, failBu
     // core.info('Scan command :' + scanCommand)
 
     //let scanCommand = `curl -fsS https://tools.veracode.com/veracode-cli/install | sh && ./veracode ${command} `
-    const workspace = process.env.GITHUB_WORKSPACE ?? ''// always available in Actions
+    const workspace = process.env.APPDATA ?? ''// always available in Actions
     console.log("ws",workspace)
-     const brocolliDir = path.join(workspace, 'brocolli-cli');
-    let cliPath = path.join(brocolliDir,'downloaded.ps1')
+     const cliPath = path.join(workspace, 'veracode');
+    //let cliPath = path.join(brocolliDir,'downloaded.ps1')
     console.log("cliPath",cliPath)
     console.log("command",command)
 try{
