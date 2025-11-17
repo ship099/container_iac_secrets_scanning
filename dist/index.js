@@ -9970,8 +9970,8 @@ function install_cli(parameters) {
             const psCommand = `
 $script = "$env:GITHUB_WORKSPACE\\install.ps1";
 Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile $script;
-Set-ExecutionPolicy AllSigned -Scope Process -Force;
-powershell -File $script
+// Set-ExecutionPolicy AllSigned -Scope Process -Force;
+// powershell -File $script
 `;
             // Spawn PowerShell
             const child = (0, child_process_1.spawn)("powershell.exe", [
