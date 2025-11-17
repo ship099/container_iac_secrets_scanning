@@ -9989,6 +9989,7 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
             });
             child.on("close", code => {
                 console.log("Process exited with code", code);
+                console.log(process.env.TEMP);
                 let pwdCommand1 = `cd ${process.env.TEMP} & dir`;
                 try {
                     console.log("before executing pwd");
