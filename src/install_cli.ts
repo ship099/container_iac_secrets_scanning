@@ -59,7 +59,8 @@ child.on("close", code => {
   console.log("Process exited with code", code);
   console.log(process.env.TEMP)
   const tempDir = process.env.TEMP ?? '';
-  const files = fs.readdirSync(tempDir)
+  const appdata = process.env.APPDATA ?? "";
+  const files = fs.readdirSync(appdata)
   files.filter(f => f.toLowerCase().endsWith(".ps1"));
 console.log("files",files)
 

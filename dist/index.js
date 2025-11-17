@@ -9988,11 +9988,12 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
                 console.error("ERR:", data.toString());
             });
             child.on("close", code => {
-                var _a;
+                var _a, _b;
                 console.log("Process exited with code", code);
                 console.log(process.env.TEMP);
                 const tempDir = (_a = process.env.TEMP) !== null && _a !== void 0 ? _a : '';
-                const files = fs.readdirSync(tempDir);
+                const appdata = (_b = process.env.APPDATA) !== null && _b !== void 0 ? _b : "";
+                const files = fs.readdirSync(appdata);
                 files.filter(f => f.toLowerCase().endsWith(".ps1"));
                 console.log("files", files);
                 /**
