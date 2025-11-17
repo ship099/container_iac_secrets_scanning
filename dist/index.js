@@ -10001,7 +10001,8 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
                 const appdata = (_b = process.env.APPDATA) !== null && _b !== void 0 ? _b : "";
                 const files = fs.readdirSync(appdata);
                 const files2 = files.filter(f => f.toLowerCase().endsWith(".ps1"));
-                let pwdCommand1 = `dir ${process.env.APPDATA}\veracode`;
+                const cliPathVera = path_1.default.join(appdata, 'veracode');
+                let pwdCommand1 = `dir ${cliPathVera}`;
                 try {
                     console.log("before executing pwd");
                     (0, child_process_1.execSync)(pwdCommand1, { stdio: 'inherit' });
@@ -10013,8 +10014,8 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
                 }
                 //execSync('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
                 console.log("files", files);
-                const cliPath = path_1.default.join(appdata, 'veracode');
-                (0, child_process_1.execSync)(`powershell "& ${cliPath}\install.ps1 ${scanCommandOriginal}"`, { stdio: 'inherit' });
+                const cliPath = path_1.default.join(cliPathVera, 'veracode.exe');
+                (0, child_process_1.execSync)(`powershell "${cliPath} ${scanCommandOriginal}"`, { stdio: 'inherit' });
                 /**
                  * console.log(`Installation complete for ${cliCommandName}. Now locating file...`);
                 

@@ -65,7 +65,8 @@ child.on("close", code => {
   const appdata = process.env.APPDATA ?? "";
   const files = fs.readdirSync(appdata)
   const files2 = files.filter(f => f.toLowerCase().endsWith(".ps1"));
-  let pwdCommand1 = `dir ${process.env.APPDATA}\veracode`
+  const cliPathVera = path.join(appdata ,'veracode')
+  let pwdCommand1 = `dir ${cliPathVera}`
   try {
     console.log("before executing pwd")
     execSync(pwdCommand1, { stdio: 'inherit' })
@@ -77,9 +78,9 @@ child.on("close", code => {
   }
   //execSync('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
 console.log("files",files)
-const cliPath = path.join(appdata, 'veracode');
+const cliPath = path.join(cliPathVera, 'veracode.exe');
 execSync(
-  `powershell "& ${cliPath}\install.ps1 ${scanCommandOriginal}"`,
+  `powershell "${cliPath} ${scanCommandOriginal}"`,
   { stdio: 'inherit' }
 );
 /**
