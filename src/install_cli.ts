@@ -20,7 +20,7 @@ try{
     psCommand1
   ];
 
-  let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format ${parameters.format} --output ${results_file}`
+  let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format ${parameters.format} --output ${results_file} --temp ./`
   const appdata = process.env.APPDATA ?? "";
   const files = fs.readdirSync(appdata)
   console.log(files)

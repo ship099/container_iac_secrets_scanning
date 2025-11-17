@@ -9962,7 +9962,7 @@ function install_cli(parameters) {
                 '-Command',
                 psCommand1
             ];
-            let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format ${parameters.format} --output ${results_file}`;
+            let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format ${parameters.format} --output ${results_file} --temp ./`;
             const appdata = (_b = process.env.APPDATA) !== null && _b !== void 0 ? _b : "";
             const files = fs.readdirSync(appdata);
             console.log(files);
