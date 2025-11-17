@@ -9639,7 +9639,7 @@ function ContainerScan(parameters) {
         process_1.env.VERACODE_API_KEY_SECRET = parameters.vkey;
         let results_file = 'results.json';
         let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format ${parameters.format} --output ${results_file}`;
-        (0, run_command_1.run_cli)(scanCommandOriginal, parameters.debug, 'results.json', parameters.fail_build_on_error);
+        yield (0, run_command_1.run_cli)(scanCommandOriginal, parameters.debug, 'results.json', parameters.fail_build_on_error);
         // //run this when oputput is requires and we may create issues and/or PR decorations
         // if ( parameters.command == "scan" ){
         //   let results_file = ""
