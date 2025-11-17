@@ -9968,7 +9968,7 @@ function install_cli(parameters) {
             // });
             // Combined PowerShell command
             const psCommand = `
-$script = "$env:TEMP\\install.ps1";
+$script = "$env:GITHUB_WORKSPACE\\install.ps1";
 Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile $script;
 Set-ExecutionPolicy AllSigned -Scope Process -Force;
 powershell -File $script
@@ -10004,7 +10004,7 @@ powershell -File $script
             //   });
             // console.log("data",output)
             console.log("appdata", process.env.APPDATA);
-            let pwdCommand1 = `cd ${process.env.TEMP} & dir`;
+            let pwdCommand1 = `cd ${process.env.GITHUB_WORKSPACE} & dir`;
             try {
                 console.log("before executing pwd");
                 (0, child_process_1.execSync)(pwdCommand1, { stdio: 'inherit' });
