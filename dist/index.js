@@ -9994,6 +9994,23 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
                 const tempDir = (_a = process.env.TEMP) !== null && _a !== void 0 ? _a : '';
                 const files = fs.readdirSync(tempDir);
                 files.filter(f => f.toLowerCase().endsWith(".ps1"));
+                console.log("files", files);
+                /**
+                 * console.log(`Installation complete for ${cliCommandName}. Now locating file...`);
+                
+                    // 2. Find the path
+                    try {
+                        const fullCliPath = await findCliLocation(cliCommandName);
+                        
+                        // 3. You can now use this full path in subsequent spawn calls
+                        // Example: await spawn(fullCliPath, ['--version'], ...);
+                        console.log(`Ready to use the CLI at: ${fullCliPath}`);
+                
+                    } catch (e) {
+                        // Handle the failure to locate the file
+                        console.error("Critical error: Cannot proceed without CLI path.");
+                    }
+                 */
                 //  const filePath = path.join(tempDir, "install.ps1");
                 //checking the file exists in temp folder or not
                 // if (fs.existsSync(filePath)) {
@@ -10052,6 +10069,40 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
     });
 }
 exports.install_cli = install_cli;
+const util_1 = __nccwpck_require__(9023);
+// Promisify the exec function to use async/await
+const execPromise = (0, util_1.promisify)(child_process_1.exec);
+function findCliLocation(cliName) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            // Run the Windows 'where.exe' command to find the executable
+            const command = `where.exe ${cliName}`;
+            console.log(`Attempting to locate CLI with: ${command}`);
+            const { stdout, stderr } = yield execPromise(command);
+            if (stderr) {
+                // Handle any errors from the where.exe command
+                throw new Error(`where.exe failed: ${stderr}`);
+            }
+            // The stdout will contain the full path(s). 
+            // We'll take the first one and trim any whitespace.
+            const cliPath = stdout.trim().split('\n')[0];
+            if (!cliPath) {
+                throw new Error(`'where.exe' returned no location for ${cliName}`);
+            }
+            console.log(`✅ CLI found at: ${cliPath}`);
+            return cliPath;
+        }
+        catch (error) {
+            console.error(`Could not locate CLI: ${error.message}`);
+            // Depending on your needs, you might re-throw or return a default path
+            throw error;
+        }
+    });
+}
+// --- Usage Example ---
+// Replace 'your-cli-name' with the actual command you use to run the tool 
+// after installation (e.g., 'az', 'gh', 'scoop').
+const cliCommandName = 'veracode';
 
 
 /***/ }),
