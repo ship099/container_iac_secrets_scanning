@@ -9962,10 +9962,10 @@ function install_cli(parameters) {
             ];
             // execSync(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
             // console.log('Download complete!')
-            // const child = await spawn('powershell.exe', args, {
-            //   stdio: 'inherit', // Pipes the output to the console for real-time viewing
-            //   shell: true,      // Using shell: true can sometimes help with command resolution on Windows
-            // });
+            const child = yield (0, child_process_1.spawn)('powershell.exe', args, {
+                stdio: 'inherit',
+                shell: true, // Using shell: true can sometimes help with command resolution on Windows
+            });
             // Combined PowerShell command
             const psCommand = `
 $script = "$env:GITHUB_WORKSPACE\\install.ps1";
@@ -9974,17 +9974,17 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
             // Set-ExecutionPolicy AllSigned -Scope Process -Force;
             // powershell -File $script
             // Spawn PowerShell
-            const child = (0, child_process_1.spawn)("powershell.exe", [
-                "-NoProfile",
-                "-ExecutionPolicy", "Bypass",
-                "-Command",
-                psCommand1
-            ]);
+            // const child = spawn("powershell.exe", [
+            //   "-NoProfile",
+            //   "-ExecutionPolicy", "Bypass",
+            //   "-Command",
+            //   psCommand1
+            // ]);
             // Output handling
             child.on("data", data => {
                 console.log("OUT:", data.toString());
             });
-            child.stderr.on("data", data => {
+            child.on("data", data => {
                 console.error("ERR:", data.toString());
             });
             child.on("close", code => {
