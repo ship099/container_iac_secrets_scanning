@@ -47,7 +47,7 @@ const child = spawn("powershell.exe", [
 ]);
 
 // Output handling
-child.stdout.on("data", data => {
+child.on("data", data => {
   console.log("OUT:", data.toString());
 });
 

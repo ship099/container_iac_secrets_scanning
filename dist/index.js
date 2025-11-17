@@ -9981,7 +9981,7 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
                 psCommand
             ]);
             // Output handling
-            child.stdout.on("data", data => {
+            child.on("data", data => {
                 console.log("OUT:", data.toString());
             });
             child.stderr.on("data", data => {
