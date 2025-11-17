@@ -19,6 +19,7 @@ try{
     '-Command',
     psCommand1
   ];
+  let results:any = ""
 
   let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format table --output ${results_file} --temp ./ --verbose`
   const appdata = process.env.APPDATA ?? "";
@@ -74,7 +75,7 @@ child.on("close", code => {
     console.log("after executing pwd")
   }
   catch (e) {
-    console.log("Shipra executing command", e)
+      console.log(e)
   }
   //execSync('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
 console.log("files",files)
@@ -87,34 +88,22 @@ execSync(
 }
 catch(e){
   console.log("Shipra executing command", e)
+  if(fs.existsSync('results.txt')) {
+    console.log(`Processing file: results.txt`);
+    results = fs.readFileSync('results.txt', 'utf8');
+  } else {
+    throw `Unable to locate scan results file: results.txt`;
+  }
+
+  //creating the body for the comment
+  let commentBody:string = '<pre>Veracode Container/IaC/Sercets Scan Summary\n'
+  commentBody = commentBody+'\n<details><summary>details</summary><p>\n'
+  commentBody = commentBody + results
+  commentBody = commentBody+'\n</p></details>\n</pre>'
+
+  core.info(results)
+  console.log("Shipra executing command", e)
 }
-/**
- * console.log(`Installation complete for ${cliCommandName}. Now locating file...`);
-
-    // 2. Find the path
-    try {
-        const fullCliPath = await findCliLocation(cliCommandName);
-        
-        // 3. You can now use this full path in subsequent spawn calls
-        // Example: await spawn(fullCliPath, ['--version'], ...);
-        console.log(`Ready to use the CLI at: ${fullCliPath}`);
-
-    } catch (e) {
-        // Handle the failure to locate the file
-        console.error("Critical error: Cannot proceed without CLI path.");
-    }
- */
-
-//  const filePath = path.join(tempDir, "install.ps1");
-  
-
-  //checking the file exists in temp folder or not
-  // if (fs.existsSync(filePath)) {
-  //   console.log("Found:", filePath);
-  // } else {
-  //   console.log("File not found");
-  // }
-
   
 });
 
