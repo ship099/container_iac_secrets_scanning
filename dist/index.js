@@ -9988,18 +9988,27 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
                 console.error("ERR:", data.toString());
             });
             child.on("close", code => {
+                var _a;
                 console.log("Process exited with code", code);
                 console.log(process.env.TEMP);
-                let pwdCommand1 = `cd ${process.env.TEMP} & dir`;
-                try {
-                    console.log("before executing pwd");
-                    (0, child_process_1.execSync)(pwdCommand1, { stdio: 'inherit' });
-                    // execSync(lsCommand, { stdio: 'inherit' })
-                    console.log("after executing pwd");
+                const tempDir = (_a = process.env.TEMP) !== null && _a !== void 0 ? _a : '';
+                const filePath = path_1.default.join(tempDir, "install.ps1");
+                if (fs.existsSync(filePath)) {
+                    console.log("Found:", filePath);
                 }
-                catch (e) {
-                    console.log("Shipra executing command", e);
+                else {
+                    console.log("File not found");
                 }
+                // let pwdCommand1 = `cd ${process.env.TEMP} & dir`
+                // try {
+                //   console.log("before executing pwd")
+                //   execSync(pwdCommand1, { stdio: 'inherit' })
+                //  // execSync(lsCommand, { stdio: 'inherit' })
+                //   console.log("after executing pwd")
+                // }
+                // catch (e) {
+                //   console.log("Shipra executing command", e)
+                // }
             });
             // console.log("child",child)
             //   child.on('error', (error) => {

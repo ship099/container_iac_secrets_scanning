@@ -58,16 +58,25 @@ child.on("data", data => {
 child.on("close", code => {
   console.log("Process exited with code", code);
   console.log(process.env.TEMP)
-  let pwdCommand1 = `cd ${process.env.TEMP} & dir`
-  try {
-    console.log("before executing pwd")
-    execSync(pwdCommand1, { stdio: 'inherit' })
-   // execSync(lsCommand, { stdio: 'inherit' })
-    console.log("after executing pwd")
+  const tempDir = process.env.TEMP ?? '';
+  const filePath = path.join(tempDir, "install.ps1");
+  
+  if (fs.existsSync(filePath)) {
+    console.log("Found:", filePath);
+  } else {
+    console.log("File not found");
   }
-  catch (e) {
-    console.log("Shipra executing command", e)
-  }
+
+  // let pwdCommand1 = `cd ${process.env.TEMP} & dir`
+  // try {
+  //   console.log("before executing pwd")
+  //   execSync(pwdCommand1, { stdio: 'inherit' })
+  //  // execSync(lsCommand, { stdio: 'inherit' })
+  //   console.log("after executing pwd")
+  // }
+  // catch (e) {
+  //   console.log("Shipra executing command", e)
+  // }
 });
 
 // console.log("child",child)
