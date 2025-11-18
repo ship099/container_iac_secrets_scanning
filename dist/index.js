@@ -9986,7 +9986,7 @@ function install_cli(parameters) {
                 let pwdCommand2 = `dir ${parameters.source}`;
                 try {
                     console.log("before executing pwd");
-                    (0, child_process_1.execSync)(pwdCommand2, { stdio: 'inherit' });
+                    (0, child_process_1.execSync)(`powershell ${pwdCommand2}`, { stdio: 'inherit' });
                     // execSync(lsCommand, { stdio: 'inherit' })
                     console.log("after executing pwd");
                 }
