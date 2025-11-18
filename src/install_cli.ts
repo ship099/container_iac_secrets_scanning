@@ -8,9 +8,6 @@ export async function install_cli(parameters:any) {
 try{
     //let installCommand = `cd ..;mkdir veracode-cli; cd veracode-cli; curl -fsS https://tools.veracode.com/veracode-cli/install | sh`
    const workspace = process.env.GITHUB_WORKSPACE ?? ''// always available in Actions
-   //console.log("ws",workspace)
-    const brocolliDir = path.join(workspace, 'brocolli-cli');
-    fs.mkdirSync(brocolliDir);
  
     let results_file = 'results.txt' 
   const psCommand1 = `Set-ExecutionPolicy AllSigned -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))`
@@ -22,117 +19,72 @@ try{
   let results:any = ""
 
   let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format table --output ${results_file} --temp ./ --verbose`
-  const appdata = process.env.APPDATA ?? "";
-  const files = fs.readdirSync(appdata)
-  console.log(files)
 
- // execSync(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
-  // console.log('Download complete!')
+
+
+  //using spawn to install the CLI
   const child = await spawn('powershell.exe', args, {
     stdio: 'inherit', // Pipes the output to the console for real-time viewing
     shell: true,      // Using shell: true can sometimes help with command resolution on Windows
   });
 
-// Combined PowerShell command
-const psCommand = `
-$script = "$env:GITHUB_WORKSPACE\\install.ps1";
-Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile $script;
-`;
+  child.on("data", data => {
+    console.log("OUT:", data.toString());
+  });
 
-// Set-ExecutionPolicy AllSigned -Scope Process -Force;
-// powershell -File $script
+  child.on("data", data => {
+    console.error("ERR:", data.toString());
+  });
 
-// Spawn PowerShell
-// const child = spawn("powershell.exe", [
-//   "-NoProfile",
-//   "-ExecutionPolicy", "Bypass",
-//   "-Command",
-//   psCommand1
-// ]);
-
-// Output handling
-child.on("data", data => {
-  console.log("OUT:", data.toString());
-});
-
-child.on("data", data => {
-  console.error("ERR:", data.toString());
-});
-
-child.on("close", code => {
-  console.log("Process exited with code", code);
-  console.log(process.env.TEMP)
-  const tempDir = process.env.TEMP ?? '';
-  const appdata = process.env.APPDATA ?? "";
-  const files = fs.readdirSync(appdata)
-  const files2 = files.filter(f => f.toLowerCase().endsWith(".ps1"));
-  const cliPathVera = path.join(appdata ,'veracode')
-  let pwdCommand1 = `dir ${cliPathVera}`
-  try {
-    console.log("before executing pwd")
-    execSync(pwdCommand1, { stdio: 'inherit' })
-   // execSync(lsCommand, { stdio: 'inherit' })
-    console.log("after executing pwd")
-  }
-  catch (e) {
+  child.on("close", code => {
+    console.log("Process exited with code", code);
+    console.log(process.env.TEMP)
+    const tempDir = process.env.TEMP ?? '';
+    const appdata = process.env.APPDATA ?? "";
+    const files = fs.readdirSync(appdata)
+    const files2 = files.filter(f => f.toLowerCase().endsWith(".ps1"));
+    const cliPathVera = path.join(appdata, 'veracode')
+    let pwdCommand1 = `dir ${cliPathVera}`
+    let pwdCommand2 = `dir ${parameters.source}`
+    try {
+      console.log("before executing pwd")
+      execSync(pwdCommand2, { stdio: 'inherit' })
+      // execSync(lsCommand, { stdio: 'inherit' })
+      console.log("after executing pwd")
+    }
+    catch (e) {
       console.log(e)
-  }
-  //execSync('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
-console.log("files",files)
-const cliPath = path.join(cliPathVera, 'veracode.exe');
-try{
-execSync(
-  `powershell "${cliPath} ${scanCommandOriginal}"`,
-  { stdio: 'inherit' }
-);
-}
-catch(e){
-  console.log("Shipra executing command", e)
-  if(fs.existsSync('results.txt')) {
-    console.log(`Processing file: results.txt`);
-    results = fs.readFileSync('results.txt', 'utf8');
-  } else {
-    throw `Unable to locate scan results file: results.txt`;
-  }
+    }
 
-  //creating the body for the comment
-  let commentBody:string = '<pre>Veracode Container/IaC/Sercets Scan Summary\n'
-  commentBody = commentBody+'\n<details><summary>details</summary><p>\n'
-  commentBody = commentBody + results
-  commentBody = commentBody+'\n</p></details>\n</pre>'
+    const cliPath = path.join(cliPathVera, 'veracode.exe');
+    try {
+      execSync(
+        `powershell "${cliPath} ${scanCommandOriginal}"`,
+        { stdio: 'inherit' }
+      );
+    }
+    catch (e) {
+      console.log("Shipra executing command", e)
+      if (fs.existsSync('results.txt')) {
+        console.log(`Processing file: results.txt`);
+        results = fs.readFileSync('results.txt', 'utf8');
+      } else {
+        throw `Unable to locate scan results file: results.txt`;
+      }
 
-  core.info(results)
-  console.log("Shipra executing command", e)
-}
-  
-});
+      //creating the body for the comment
+      let commentBody: string = '<pre>Veracode Container/IaC/Sercets Scan Summary\n'
+      commentBody = commentBody + '\n<details><summary>details</summary><p>\n'
+      commentBody = commentBody + results
+      commentBody = commentBody + '\n</p></details>\n</pre>'
 
-// console.log("child",child)
-//   child.on('error', (error) => {
-//     // This catches errors in the spawn process itself (e.g., powershell.exe not found)
-//     console.error(`Failed to start PowerShell process: ${error.message}`);
-//   });
-//   let output: string = '';
-//   // child.stdout!.on('data', (data) => {
-//   //             output = `${output}${data}`;
-//   //         });
+      core.info(results)
+      console.log("Shipra executing command", e)
+    }
 
-//   child.on('close', (code) => {
-//     console.log(`Child process exited with code ${code}`);
-//   });
-// console.log("data",output)
+  });
 
    console.log("appdata",process.env.APPDATA)
-// let pwdCommand1 = `cd ${process.env.GITHUB_WORKSPACE} & dir`
-//   try {
-//     console.log("before executing pwd")
-//     execSync(pwdCommand1, { stdio: 'inherit' })
-//    // execSync(lsCommand, { stdio: 'inherit' })
-//     console.log("after executing pwd")
-//   }
-//   catch (e) {
-//     console.log("Shipra executing command", e)
-//   }
     
    // let curlCommandOutputInitial = execSync(installCommandInitial)
    // let curlCommandOutput = execSync(installCommand)

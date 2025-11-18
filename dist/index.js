@@ -9948,14 +9948,11 @@ const child_process_1 = __nccwpck_require__(5317);
 const path_1 = __importDefault(__nccwpck_require__(6928));
 const fs = __importStar(__nccwpck_require__(9896));
 function install_cli(parameters) {
-    var _a, _b;
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             //let installCommand = `cd ..;mkdir veracode-cli; cd veracode-cli; curl -fsS https://tools.veracode.com/veracode-cli/install | sh`
             const workspace = (_a = process.env.GITHUB_WORKSPACE) !== null && _a !== void 0 ? _a : ''; // always available in Actions
-            //console.log("ws",workspace)
-            const brocolliDir = path_1.default.join(workspace, 'brocolli-cli');
-            fs.mkdirSync(brocolliDir);
             let results_file = 'results.txt';
             const psCommand1 = `Set-ExecutionPolicy AllSigned -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://tools.veracode.com/veracode-cli/install.ps1'))`;
             const args = [
@@ -9965,30 +9962,11 @@ function install_cli(parameters) {
             ];
             let results = "";
             let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format table --output ${results_file} --temp ./ --verbose`;
-            const appdata = (_b = process.env.APPDATA) !== null && _b !== void 0 ? _b : "";
-            const files = fs.readdirSync(appdata);
-            console.log(files);
-            // execSync(`powershell.exe -Command "${psCommand1}"`, { stdio: 'inherit' });
-            // console.log('Download complete!')
+            //using spawn to install the CLI
             const child = yield (0, child_process_1.spawn)('powershell.exe', args, {
                 stdio: 'inherit',
                 shell: true, // Using shell: true can sometimes help with command resolution on Windows
             });
-            // Combined PowerShell command
-            const psCommand = `
-$script = "$env:GITHUB_WORKSPACE\\install.ps1";
-Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile $script;
-`;
-            // Set-ExecutionPolicy AllSigned -Scope Process -Force;
-            // powershell -File $script
-            // Spawn PowerShell
-            // const child = spawn("powershell.exe", [
-            //   "-NoProfile",
-            //   "-ExecutionPolicy", "Bypass",
-            //   "-Command",
-            //   psCommand1
-            // ]);
-            // Output handling
             child.on("data", data => {
                 console.log("OUT:", data.toString());
             });
@@ -10005,17 +9983,16 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
                 const files2 = files.filter(f => f.toLowerCase().endsWith(".ps1"));
                 const cliPathVera = path_1.default.join(appdata, 'veracode');
                 let pwdCommand1 = `dir ${cliPathVera}`;
+                let pwdCommand2 = `dir ${parameters.source}`;
                 try {
                     console.log("before executing pwd");
-                    (0, child_process_1.execSync)(pwdCommand1, { stdio: 'inherit' });
+                    (0, child_process_1.execSync)(pwdCommand2, { stdio: 'inherit' });
                     // execSync(lsCommand, { stdio: 'inherit' })
                     console.log("after executing pwd");
                 }
                 catch (e) {
                     console.log(e);
                 }
-                //execSync('powershell -NoProfile -Command "Get-Command veracode | Select-Object -ExpandProperty Definition"', { stdio: 'inherit' });
-                console.log("files", files);
                 const cliPath = path_1.default.join(cliPathVera, 'veracode.exe');
                 try {
                     (0, child_process_1.execSync)(`powershell "${cliPath} ${scanCommandOriginal}"`, { stdio: 'inherit' });
@@ -10038,30 +10015,7 @@ Invoke-WebRequest 'https://tools.veracode.com/veracode-cli/install.ps1' -OutFile
                     console.log("Shipra executing command", e);
                 }
             });
-            // console.log("child",child)
-            //   child.on('error', (error) => {
-            //     // This catches errors in the spawn process itself (e.g., powershell.exe not found)
-            //     console.error(`Failed to start PowerShell process: ${error.message}`);
-            //   });
-            //   let output: string = '';
-            //   // child.stdout!.on('data', (data) => {
-            //   //             output = `${output}${data}`;
-            //   //         });
-            //   child.on('close', (code) => {
-            //     console.log(`Child process exited with code ${code}`);
-            //   });
-            // console.log("data",output)
             console.log("appdata", process.env.APPDATA);
-            // let pwdCommand1 = `cd ${process.env.GITHUB_WORKSPACE} & dir`
-            //   try {
-            //     console.log("before executing pwd")
-            //     execSync(pwdCommand1, { stdio: 'inherit' })
-            //    // execSync(lsCommand, { stdio: 'inherit' })
-            //     console.log("after executing pwd")
-            //   }
-            //   catch (e) {
-            //     console.log("Shipra executing command", e)
-            //   }
             // let curlCommandOutputInitial = execSync(installCommandInitial)
             // let curlCommandOutput = execSync(installCommand)
             // if ( parameters.debug == "true" ){
