@@ -18,7 +18,7 @@ export async function ContainerScan(parameters:any) {
   env.VERACODE_API_KEY_SECRET= parameters.vkey
 
   let results_file = 'results.json'
-  let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format ${parameters.format} --output ${results_file}`
+  let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format ${parameters.format} --output ${results_file} --temp ./`
     
   await run_cli(scanCommandOriginal,parameters.debug,'results.json',parameters.fail_build_on_error)
 
@@ -34,7 +34,7 @@ export async function ContainerScan(parameters:any) {
     }
 
     //generate command to run
-    let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format ${parameters.format} --output ${results_file}`
+    let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format ${parameters.format} --output ${results_file} --temp ./`
     
     if ( parameters.debug == "true" ){
       core.info('#### DEBUG START ####')
