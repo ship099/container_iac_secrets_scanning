@@ -60,7 +60,7 @@ export async function ContainerScan(parameters:any) {
       async function runParallelFunctions(): Promise<void> {
         //also run the scan to get text output
         let scanCommandText = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format table --output results.txt`
-        const promises = [run_cli(scanCommandOriginal,parameters.debug,'results.json'), run_cli(scanCommandText,parameters.debug,'results.txt'), run_cli(sbom_cyclonedx_xml,parameters.debug,sbom_cyclonedx_xml_results_file), run_cli(sbom_cyclonedx_json,parameters.debug,sbom_cyclonedx_json_results_file), run_cli(sbom_spdx_tag_value,parameters.debug,sbom_spdx_tag_value_results_file), run_cli(sbom_spdx_json,parameters.debug,sbom_spdx_json_results_file), run_cli(sbom_github,parameters.debug,sbom_github_results_file)];
+        const promises = [run_cli(scanCommandOriginal,parameters.debug,'results.json',parameters.fail_build_on_error), run_cli(scanCommandText,parameters.debug,'results.txt',parameters.fail_build_on_error), run_cli(sbom_cyclonedx_xml,parameters.debug,sbom_cyclonedx_xml_results_file,parameters.fail_build_on_error), run_cli(sbom_cyclonedx_json,parameters.debug,sbom_cyclonedx_json_results_file,parameters.fail_build_on_error), run_cli(sbom_spdx_tag_value,parameters.debug,sbom_spdx_tag_value_results_file,parameters.fail_build_on_error), run_cli(sbom_spdx_json,parameters.debug,sbom_spdx_json_results_file,parameters.fail_build_on_error), run_cli(sbom_github,parameters.debug,sbom_github_results_file,parameters.fail_build_on_error)];
         await Promise.all(promises);
         core.info('All functions completed in parallel');
       }
@@ -72,11 +72,11 @@ export async function ContainerScan(parameters:any) {
 
       //store artifacts
       let files = ['results.json','results.txt','sbom_cyclonedx_xml.xml','sbom_cyclonedx_json.json','sbom_spdx_tag_value.json','sbom_spdx_json.json','sbom_github.json']
-      let storeArtifacts = await store_artifacts(files,parameters.debug)
+      let storeArtifacts = await store_artifacts(files,parameters.debug, parameters?.platformType)
     }
     else {
       async function runParallelFunctions(): Promise<void> {
-        const promises = [run_cli(scanCommandOriginal,parameters.debug,'results.txt'), run_cli(sbom_cyclonedx_xml,parameters.debug,sbom_cyclonedx_xml_results_file), run_cli(sbom_cyclonedx_json,parameters.debug,sbom_cyclonedx_json_results_file), run_cli(sbom_spdx_tag_value,parameters.debug,sbom_spdx_tag_value_results_file), run_cli(sbom_spdx_json,parameters.debug,sbom_spdx_json_results_file), run_cli(sbom_github,parameters.debug,sbom_github_results_file)];
+        const promises = [run_cli(scanCommandOriginal,parameters.debug,'results.txt',parameters.fail_build_on_error), run_cli(sbom_cyclonedx_xml,parameters.debug,sbom_cyclonedx_xml_results_file,parameters.fail_build_on_error), run_cli(sbom_cyclonedx_json,parameters.debug,sbom_cyclonedx_json_results_file,parameters.fail_build_on_error), run_cli(sbom_spdx_tag_value,parameters.debug,sbom_spdx_tag_value_results_file,parameters.fail_build_on_error), run_cli(sbom_spdx_json,parameters.debug,sbom_spdx_json_results_file,parameters.fail_build_on_error), run_cli(sbom_github,parameters.debug,sbom_github_results_file,parameters.fail_build_on_error)];
         await Promise.all(promises);
         core.info('All functions completed in parallel');
       }
@@ -88,7 +88,7 @@ export async function ContainerScan(parameters:any) {
 
       //store artifacts
       let files = ['results.txt','sbom_cyclonedx_xml.xml','sbom_cyclonedx_json.json','sbom_spdx_tag_value.json','sbom_spdx_json.json','sbom_github.json']
-      let storeArtifacts = await store_artifacts(files,parameters.debug)
+      let storeArtifacts = await store_artifacts(files,parameters.debug, parameters?.platformType)
 
     }
 
@@ -219,8 +219,8 @@ export async function ContainerScan(parameters:any) {
 
     //generate command to run
     let scanCommandOriginal = `${parameters.command} --source ${parameters.source} --type ${parameters.type} --format ${parameters.format} --output ${filename}`
-    run_cli(scanCommandOriginal,parameters.debug,filename)
-    let storeArtifacts = await store_artifacts(resultFile,parameters.debug)
+    run_cli(scanCommandOriginal,parameters.debug,filename,parameters.fail_build_on_error)
+    let storeArtifacts = await store_artifacts(resultFile,parameters.debug, parameters?.platformType)
 
   }
 
