@@ -12,7 +12,7 @@ export async function run_cli(command: string, debug: any, resultsfile: any, fai
         const cliPath = path.join(cliPathVera, 'veracode.exe');
         try {
             let curlCommandOutput = execSync(
-                `powershell "${cliPath} ${command}"`,
+                `${cliPath} ${command}`,
                 { stdio: 'inherit' }
             );
 

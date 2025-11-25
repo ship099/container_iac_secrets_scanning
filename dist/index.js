@@ -100233,7 +100233,7 @@ function run_cli(command, debug, resultsfile, failBuildOnError) {
             const cliPathVera = path_1.default.join(appdata, 'veracode');
             const cliPath = path_1.default.join(cliPathVera, 'veracode.exe');
             try {
-                let curlCommandOutput = (0, child_process_1.execSync)(`powershell "${cliPath} ${command}"`, { stdio: 'inherit' });
+                let curlCommandOutput = (0, child_process_1.execSync)(`${cliPath} ${command}`, { stdio: 'inherit' });
                 if (debug == "true") {
                     core.info('#### DEBUG START ####');
                     core.info('run_command.ts - command output');
